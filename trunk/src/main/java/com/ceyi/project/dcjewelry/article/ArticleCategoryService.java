@@ -1,0 +1,106 @@
+package com.ceyi.project.dcjewelry.article;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+import pw.wecode.project.framework.jdbc.Dao;
+import pw.wecode.project.framework.jdbc.ParamMap;
+
+import javax.inject.Inject;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Created by lingh on 2017/4/6.
+ */
+@Component
+public class ArticleCategoryService {
+    private static final Logger logger = LoggerFactory.getLogger(ArticleCategory.class);
+    @Inject
+    private Dao dao;
+
+    public void save(ArticleCategory articleCategory) {
+        if (articleCategory.getId() > 0) {
+            dao.update(articleCategory);
+        } else {
+            dao.create(articleCategory);
+        }
+    }
+
+    public ArticleCategory get(int id) {
+        return dao.get(ArticleCategory.class, id);
+    }
+
+    public void delete(int[] ids) {
+        if (ids == null) {
+            return;
+        }
+        for (int id : ids) {
+            ArticleCategory articleCategory = dao.get(ArticleCategory.class, id);
+            if (articleCategory == null) {
+                return;
+            }
+            if (articleCategory.getPid() == 0) {
+                dao.delete("DELETE FROM article_category WHERE pid = :pid", new ParamMap<>("pid", articleCategory.getId()));
+            }
+            dao.delete(articleCategory);
+        }
+    }
+    //获取资讯类别,0代表资讯分类
+    public List<ArticleCategory> getAll() {
+        return dao.query(ArticleCategory.class, "SELECT * FROM article_category  where type = 0 ORDER BY pid, pos ");
+    }
+    //获取图库类别，1代表图库分类
+    public List<ArticleCategory> getAllImg() {
+        return dao.query(ArticleCategory.class, "SELECT * FROM article_category  where type = 1 ORDER BY pid, pos");
+    }
+
+    public Map<Integer, ArticleCategory> getAllAsMap() {
+        List<ArticleCategory> articleCategories = this.getAll();
+        Map<Integer, ArticleCategory> articleCategoryMap = new LinkedHashMap<>();
+        for (ArticleCategory articleCategory : articleCategories) {
+            articleCategoryMap.put(articleCategory.getId(), articleCategory);
+        }
+        return articleCategoryMap;
+    }
+
+    public Map<Integer, ArticleCategory> getTopCategory() {
+        List<ArticleCategory> articleCategories = this.getAll();
+        Map<Integer, ArticleCategory> topCategories = new LinkedHashMap<>();
+        for (ArticleCategory articleCategory : articleCategories) {
+            if(topCategories.size() < 7 ){
+                if (articleCategory.getPid() == 0) {
+                    topCategories.put(articleCategory.getId(), articleCategory);
+                } else {
+                    ArticleCategory topCategory = topCategories.get(articleCategory.getPid());
+                    if (topCategory == null) {
+                        logger.error("无效分类: {}", articleCategory);
+                    } else {
+                        topCategory.getArticleCategoryList().add(articleCategory);
+                    }
+                }
+            }else {
+                break;
+            }
+        }
+        return topCategories;
+    }
+        public Map<Integer, ArticleCategory> getTopCategoryOnImg() {
+        List<ArticleCategory> articleCategories = this.getAllImg();
+        Map<Integer, ArticleCategory> topCategories = new LinkedHashMap<>();
+        for (ArticleCategory articleCategory : articleCategories) {
+            if (articleCategory.getPid() == 0) {
+                topCategories.put(articleCategory.getId(), articleCategory);
+            } else {
+                ArticleCategory topCategory = topCategories.get(articleCategory.getPid());
+                if (topCategory == null) {
+                    logger.error("无效分类: {}", articleCategory);
+                } else {
+                    topCategory.getArticleCategoryList().add(articleCategory);
+                }
+            }
+        }
+        return topCategories;
+    }
+}

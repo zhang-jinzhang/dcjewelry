@@ -1,0 +1,68 @@
+<%
+layout("/admin/layout.html",{
+}){
+%>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">水印列表</h3>
+                <a href="/admin/wm/create.html" class="btn btn-info">添加</a>
+                <button id="del-btn" class="btn btn-danger">删除</button>
+            </div>
+            <div class="box-body">
+                <table id="dt" data-options="'url':'/admin/wm/query', 'serverSide':false"
+                       class="dataTables table table-striped table-bordered"
+                       cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th data-options="'data':'id'">编号</th>
+                        <th data-options="'data':'url', 'render':'jewelry.imgRender'">图片</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function statusRender(data, type, row) {
+        var arr = ['新建', '在线', '下线'];
+        if (data < 0 || data > 2) {
+            return "新建"
+        }
+        return arr[data];
+    }
+    $('#del-btn').click(function () {
+        jewelry.deleteSelected('dt', '/admin/wm/delete');
+    })
+    $('#edit-btn').click(function () {
+        var row = jewelry.dtSingleSelected('dt');
+        if (!row) {
+            return
+        }
+        jewelry.redirect('/admin/banner/create.html?id=' + row.id);
+    })
+    $('#on-btn').click(function () {
+        updateStatus(1)
+    })
+    $('#off-btn').click(function () {
+        updateStatus(2)
+    })
+    function updateStatus(status) {
+        var row = jewelry.dtSingleSelected('dt');
+        if (!row) {
+            return
+        }
+        $.post('/admin/banner/updateStatus', {id: row.id, status: status}, function (result) {
+            if (result.code !== 0) {
+                jewelry.notify(result.message, 'error');
+                return
+            }
+            jewelry.notify('更新成功', function () {
+                jewelry.reloadDatatable('dt')
+            })
+        })
+    }
+</script>
+<%}%>

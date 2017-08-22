@@ -1,0 +1,72 @@
+<%
+layout("/weixin/layout.html",{
+title:'珠宝仓',
+css:['index.css'],
+js: ['swiper-3.4.1.min.js', 'index.js']
+}){
+%>
+<%if(articlePage.data.~size > 0){%>
+<script>
+    var oldest = {
+        id: '${articlePage.data[articlePage.data.~size-1].id}',
+        updateTime: '${articlePage.data[articlePage.data.~size-1].createTime, "yyyy-MM-dd HH:mm:ss"}'
+    };
+</script>
+<%}else{%>
+<script>
+    var oldest = {id: 0, updateTime: ''};
+</script>
+<%}%>
+<div class="top-box">
+    <a href="javascript:;" class="user-btn"></a>
+    <a href="/wx/message/index.html" class="news-btn"><%if(unreadCount>0){%><i>${unreadCount}</i><%}%></a>
+    <img src="${resHost}/img/icon/dczb_bg.png" alt="" class="head-tit">
+    <p class="text">10秒发布，海量图库供您选择</p>
+    <div class="i-search-wrap">
+        <div class="i-search bg-white" id="search">
+            <input class="search" type="text" placeholder="请输入您想查询的关键字">
+            <a class="search" href=""></a>
+        </div>
+    </div>
+    <p class="text">人气值：${pv!0}</p>
+</div>
+<div class="vertical-view bg-white">
+    <div class="horizontal-view clearfix">
+        <% for (topCategory in topCategories) { %>
+        <a href="/wx/article/index.html?cid=${topCategory.id}">
+            <img src="${topCategory.icon!}" alt="">
+            <p>${topCategory.name!}</p>
+        </a>
+        <%}%>
+        <a href="/wx/article/category.html">
+            <span class="classify-icon"></span>
+            <p>全部分类</p>
+        </a>
+    </div>
+</div>
+<div class="headline bg-radius clearfix">
+    <span class="tit"><i></i></span>
+    <div class="list" id="newsList">
+        <ul>
+            <%for(article in ttArticles){%>
+            <li><a href="/wx/article/${article.id}.html">${article.title}</a></li>
+            <%}%>
+        </ul>
+    </div>
+</div>
+<div class="banner" id="swiper">
+    <div class="swiper-wrapper">
+        <%for(banner in banners){%>
+        <a class="swiper-slide" href="${banner.url}">
+            <img src="${resHost}${banner.pic}" alt="">
+        </a>
+        <%}%>
+    </div>
+    <div class="swiper-pagination" id="pagination"></div>
+</div>
+<div class="card-list index-card-list">
+    <%include("/weixin/tpl_article_list_index.html"){}%>
+</div>
+<div class="update" onclick="window.location.reload()">点击刷新</div>
+<%include("/weixin/tpl_user.html"){}%>
+<%}%>

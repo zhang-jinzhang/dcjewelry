@@ -1,0 +1,87 @@
+<%
+layout("/weixin/layout.html",{
+title:'资讯详情',
+css:['index.css'],
+js: ['zixun/category.js'],
+mavNav : 1
+}){
+%>
+<div class="cg-warp">
+    <div class="cg-search bg-white">
+        <input type="search" id="search" placeholder="搜索分类或关键词">
+
+        <div class="search-pd bg-white" id="searchPd">
+            <dl class="hot-word">
+                <dt>
+                <h3>历史记录</h3></dt>
+                <dd>
+                    <%if(hisSearchList.~size == 0){%>
+                    <p>暂无历史记录</p>
+                    <%}else{%>
+                    <div class="hot-word-list clearfix">
+                        <%for(word in hisSearchList){%>
+                        <a href="/wx/article/index.html?keyword=${word}">${word}</a>
+                        <%}%>
+                    </div>
+                    <%}%>
+                </dd>
+            </dl>
+            <dl class="hot-word">
+                <dt>
+                <h3>热搜词</h3></dt>
+                <dd>
+                    <div class="hot-word-list clearfix">
+                        <%for(word in hotSearchList){%>
+                        <a href="/wx/article/index.html?keyword=${word}">${word}</a>
+                        <%}%>
+                    </div>
+                </dd>
+            </dl>
+        </div>
+    </div>
+    <div class="cg-main">
+        <ul class="main-l" id="subnav">
+            <li class="active">
+                <a href="javascript:;">全部</a>
+            </li>
+            <%for(topCategory in topCategories){%>
+            <li>
+                <a href="javascript:;">${topCategory.name!}</a>
+            </li>
+            <%}%>
+        </ul>
+        <div class="main-r" id="main">
+            <dl class="cg-list">
+                <dd>
+                    <%for(topCategory in topCategories){%>
+                    <%for(category in topCategory.articleCategoryList){%>
+                    <div class="item clearfix">
+                        <img class="fl" src="${resHost}${category.icon!}" alt="">
+                        <p class="fl">${category.name!}</p>
+                        <a class="add-category fl" href="javascript:;"
+                           data-subscribe="<%if(category.subscribed){%>false<%}else{%>true<%}%>"
+                           data-id="${category.id}"><%if(category.subscribed){%>删除<%}else{%>添加<%}%></a>
+                    </div>
+                    <%}%>
+                    <%}%>
+                </dd>
+            </dl>
+            <%for(topCategory in topCategories){%>
+            <dl class="cg-list hide">
+                <dd>
+                    <%for(category in topCategory.articleCategoryList){%>
+                    <div class="item clearfix">
+                        <img class="fl" src="${resHost}${category.icon!}" alt="">
+                        <p class="fl">${category.name!}</p>
+                        <a class="add-category fl" href="javascript:;"
+                           data-subscribe="<%if(category.subscribed){%>false<%}else{%>true<%}%>"
+                           data-id="${category.id}"><%if(category.subscribed){%>删除<%}else{%>添加<%}%></a>
+                    </div>
+                    <%}%>
+                </dd>
+            </dl>
+            <%}%>
+        </div>
+    </div>
+</div>
+<%}%>

@@ -1,0 +1,80 @@
+<%
+layout("/admin/layout.html",{
+}){
+%>
+<div class="col-lg-4 col-xs-6">
+    <div class="small-box bg-yellow">
+        <div class="inner">
+            <p>会员数</p>
+            <h3>${userCount}人</h3>
+        </div>
+        <div class="icon">
+            <i class="ion ion-person-add"></i>
+        </div>
+    </div>
+</div>
+<div class="col-lg-4 col-xs-6">
+    <div class="small-box bg-aqua">
+        <div class="inner">
+            <p>图片下载</p>
+            <h3>${downloadCount}张</h3>
+        </div>
+        <div class="icon">
+            <i class="ion ion-bag"></i>
+        </div>
+    </div>
+</div>
+<div class="col-lg-4 col-xs-6">
+    <div class="small-box bg-red">
+        <div class="inner">
+            <p>广告访问量</p>
+            <h3>${adViewCount}次</h3>
+        </div>
+        <div class="icon">
+            <i class="ion ion-pie-graph"></i>
+        </div>
+    </div>
+</div>
+<div class="col-lg-4 col-xs-6">
+    <div class="small-box bg-aqua">
+        <div class="links">
+            <a href="/admin/wm/index.html">水印设置</a>
+        </div>
+    </div>
+</div>
+<div class="col-lg-4 col-xs-6">
+    <div class="small-box bg-aqua">
+        <div class="links">
+            <a href="/admin/merchant/index.html">同行认证</a>
+        </div>
+    </div>
+</div>
+<div class="col-lg-4 col-xs-6">
+    <div class="small-box bg-aqua">
+        <div class="links">
+            <a href="/admin/point/config.html">积分设置</a>
+        </div>
+    </div>
+</div>
+<div class="col-lg-4 col-xs-6">
+    <div class="small-box bg-aqua">
+        <div class="links">
+            <a href="/admin/article/create.html">发布资讯</a>
+        </div>
+    </div>
+</div>
+<div class="col-lg-4 col-xs-6">
+    <div class="small-box bg-aqua">
+        <div class="links">
+            <a href="/admin/article/category.html">资讯分类</a>
+        </div>
+    </div>
+</div>
+<div class="col-lg-4 col-xs-6">
+    <div class="small-box bg-aqua">
+        <div class="links">
+            <a href="/admin/notice/index.html">通知管理</a>
+        </div>
+    </div>
+</div>
+<%}%>

@@ -1,0 +1,6 @@
+.logo img {
+    padding-top: 3px;
+}
+.table-striped > tbody > tr.selected {
+    background-color: #B0BED9;
+}

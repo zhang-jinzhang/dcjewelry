@@ -1,0 +1,34 @@
+<%
+layout("/admin/layout.html",{
+}){
+%>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">通知列表</h3>
+                <a href="/admin/notice/create.html" class="btn btn-info">添加通知</a>
+                <button id="del-btn" class="btn btn-danger">删除</button>
+            </div>
+            <div class="box-body">
+                <table id="dt" data-options="'url':'/admin/notice/query', 'serverSide':true"
+                       class="dataTables table table-striped table-bordered"
+                       cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th data-options="'data':'content'">标题</th>
+                        <th data-options="'data':'createTime'">创建时间</th>
+                        <!--<th data-options="'data':'updateTime'">更新时间</th>-->
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#del-btn').click(function () {
+        jewelry.deleteSelected('dt', '/admin/notice/delete');
+    })
+</script>
+<%}%>

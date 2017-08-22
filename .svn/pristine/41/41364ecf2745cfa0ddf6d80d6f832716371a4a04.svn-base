@@ -1,0 +1,128 @@
+<%
+layout("/admin/layout.html",{
+}){
+%>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">公司资料</h3>
+            </div>
+            <div class="box-body">
+                <table id="dt" data-options="'url':'/wx/queryAboutUs', 'serverSide':false"
+                       class="dataTables table table-striped table-bordered"
+                       cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th data-options="'data':'id'">编号</th>
+                        <th data-options="'data':'name'">公司名称</th>
+                        <th data-options="'data':'src'">logo</th>
+                        <th data-options="'data':'content'">公司简介</th>
+                        <th data-options="'data':'contact_way'">联系方式</th>
+                        <th data-options="'data':'email'">邮箱</th>
+                        <th data-options="'data':'fax'">传真</th>
+                        <th data-options="'data':'web'">公司网址</th>
+                        <th data-options="'data':'address'">公司地址</th>
+                        <th data-options="'data':'id','render':'editAboutUsRender'">操作</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div id="qrcode-div" class="qrcode_white_content">
+    <div style="width:155;height:20px;font-size:14px;font-weight:bold;text-align:right;CURSOR: hand;" >
+        <a href="javascript:qrcodeCancel();" class="btn btn-primary btn-xs">关闭</a></div>
+    <div class="qr-code" id="qrcode">
+        公司名称:<input id="name" type="text" value=""></br>
+        公司简介:<textarea id="content" ></textarea></br>
+        联系方式:<input id="contact_way" type="text"></br>
+        邮箱:<input id="email" type="text"></br>
+        传真:<input id="fax" type="text"></br>
+        公司网址:<input id="web" type="text"></br>
+        公司地址:<input id="address" type="text"></br>
+        <input id="src" type="file">
+    </div>
+    <input type="button" value="保存" onclick="edit()">
+</div>
+</div>
+<div id="fade" class="black_overlay"></div>
+</div>
+<script>
+function editAboutUsRender(data) {
+    return '<a href="javascript:qrcode()">编辑</a>'
+}
+function qrcode() {
+   var data = jewelry.dtSingleSelected('dt');
+   document.getElementById('name').value = data.name;
+   document.getElementById('content').value = data.content;
+   document.getElementById('contact_way').value = data.contact_way;
+   document.getElementById('email').value = data.email;
+   document.getElementById('fax').value = data.fax;
+   document.getElementById('web').value = data.web;
+   document.getElementById('address').value = data.address;
+   document.getElementById('qrcode-div').style.display='block';document.getElementById('fade').style.display='block'
+}
+function qrcodeCancel() {
+   document.getElementById('qrcode-div').style.display='none';document.getElementById('fade').style.display='none'
+}
+function edit() {
+   var data = jewelry.dtSingleSelected('dt');
+   var name = $('#name').val(),
+       content =  $('#content').val(),
+       contact_way = $('#contact_way').val(),
+       email = $('#email').val(),
+       fax = $('#fax').val(),
+       web = $('#web').val(),
+       address = $('#address').val();
+   $.post('/wx/editAboutUs', {id: data.id,
+       name: name,
+       content:content,
+       contact_way: contact_way,
+       email: email,
+       fax: fax,
+       web: web,
+       address: address
+   }, function (result) {
+        if (result.code !== 0) {
+            jewelry.notify(result.message, 'error');
+            return;
+        }
+            jewelry.notify("修改成功", function () {
+            jewelry.reloadDatatable('dt');
+        });
+   });
+}
+</script>
+<style>
+ .qrcode_white_content {
+    display: none;
+    position: absolute;
+    top: 20%;
+    left: 30%;
+    width: 500px;
+    height: 400px;
+    margin:0 auto;
+    padding: 20px;
+    border: 1px solid black;
+    background-color: white;
+    z-index:1002;
+    overflow: auto;
+ }
+.black_overlay{
+    display: none;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    z-index:1001;
+    -moz-opacity: 0.8;
+    opacity:.80;
+    filter: alpha(opacity=88);
+}
+</style>
+<%}%>

@@ -1,0 +1,29 @@
+<%
+layout("/weixin/layout.html",{
+title:'个人资料',
+css:['index.css'],
+mavNav : 0
+}){
+%>
+<div class="integral-wrap">
+    <div class="head bg-white">
+        <div class="num">
+            <span>珠宝币</span>
+            <p>${user.point}</p>
+        </div>
+        <a href="" class="help-link clearfix">
+            <i class="help-icon fl"></i>
+            <p class="fl">规则说明</p>
+        </a>
+    </div>
+    <div class="content bg-white">
+        <div class="tit">
+            <h3 class="bg-white">积分明细</h3>
+            <div class="br-1"></div>
+        </div>
+        <ul class="integral-list">
+            <%include("/weixin/point/tpl_list.html"){}%>
+        </ul>
+    </div>
+</div>
+<%}%>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>珠宝仓</title>
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <link rel="stylesheet" href="${resHost}/css/reset.css?v=${v!}">
+    <link rel="stylesheet" href="${resHost}/css/loading.css?v=${v!}">
+    <link rel="stylesheet" href="${resHost}/css/style.css?v=${v!}">
+    <script type="text/javascript" src="${resHost}/js/zepto.min.js"></script>
+    <script type="text/javascript" src="${resHost}/js/public.js?v=${v!}"></script>
+    <%if (has(css)) {
+      for (c in css) {
+    %>
+        <link rel="stylesheet" href="${resHost}/css/${c}?v=${v!}">
+    <%
+      }
+    }%>
+    <script>
+        var siteConf = {
+            host: "${host}",
+            resHost: "${resHost}",
+            v: "${v}",
+            isWeixin : false
+        };
+    </script>
+    <script src="${resHost}/js/jewelry.js?v=${v}"></script>
+    <%if(isWeixin){%>
+    <%include("/weixin/tpl_weixin_share.html"){}%>
+    <script>
+        siteConf.isWeixin = true;
+    </script>
+    <%}%>
+</head>
+<body>
+${layoutContent}
+<%
+if (isEmpty(mavNav)) {
+    mavNav = 0;
+}
+%>
+<div class="bottom-box clearfix">
+    <footer class="bottom-nav bg-white clearfix">
+        <a class="home fl <%if(mavNav == 0){%>active<%}%>" href="/wx/index.html">
+            <span class="home-icon"></span>
+            <p>首页</p>
+        </a>
+        <a class="zixun fl <%if(mavNav==1){%>active<%}%>" href="/wx/article/index.html">
+            <span class="zixun-icon"></span>
+            <p>资讯中心</p>
+        </a><a class="pic-ku fl <%if(mavNav==2){%>active<%}%>" href="/wx/article/pic_whole.html">
+            <span class="pic-ku-icon"></span>
+            <p>图库大全</p>
+        </a>
+        <a class="mapdepot fl <%if(mavNav==3){%>active<%}%>" href="/wx/article/my.html">
+            <span class="mapdepot-icon"></span>
+            <p>我的图库</p>
+        </a>
+    </footer>
+</div>
+<%
+if (has(js)) {
+  for (j in js) {
+    if (!strutil.contain(j, "http")) {
+      j = resHost + "/js/" + j + "?v=" + v;
+    }
+%>
+<script src="${j}"></script>
+<%
+  }
+}%>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<%
+layout("/weixin/layout_intro.html",{
+title:'珠宝仓',
+css:['index.css'],
+js: ['zixun/index.js'],
+mavNav : 1
+}){
+%>
+<script>
+    var cid = parseInt('${searchRequest.cid}')
+</script>
+<%if(articlePage.data.~size > 0){%>
+<script>
+    var oldest = {
+        id: '${articlePage.data[articlePage.data.~size-1].id}',
+        updateTime: '${articlePage.data[articlePage.data.~size-1].createTime, "yyyy-MM-dd HH:mm:ss"}'
+    };
+    var newest = {
+        id: '${articlePage.data[0].id}',
+        updateTime: '${articlePage.data[0].createTime, "yyyy-MM-dd HH:mm:ss"}'
+    };
+</script>
+<%}else{%>
+<script>
+    var oldest = {id: 0, updateTime: ''};
+    var newest = {id: 0, updateTime: ''};
+</script>
+<%}%>
+<div class="card-list zixun-card-list">
+    <%include("/weixin/article/intro_article_list.html"){}%>
+</div>
+<%include("/weixin/tpl_user.html"){}%>
+<%}%>

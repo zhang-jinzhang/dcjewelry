@@ -1,0 +1,581 @@
+package com.ceyi.project.dcjewelry.article;
+import com.ceyi.project.dcjewelry.admin.user.PointConfigService;
+import com.ceyi.project.dcjewelry.banner.BannerService;
+import com.ceyi.project.dcjewelry.comment.Comment;
+import com.ceyi.project.dcjewelry.comment.CommentService;
+import com.ceyi.project.dcjewelry.config.ConfigService;
+import com.ceyi.project.dcjewelry.follow.UserFollow;
+import com.ceyi.project.dcjewelry.follow.UserFollowService;
+import com.ceyi.project.dcjewelry.merchant.MerchantService;
+import com.ceyi.project.dcjewelry.message.MessageService;
+import com.ceyi.project.dcjewelry.picture.Picture;
+import com.ceyi.project.dcjewelry.picture.PictureGenerator;
+import com.ceyi.project.dcjewelry.picture.PictureService;
+import com.ceyi.project.dcjewelry.search.SearchService;
+import com.ceyi.project.dcjewelry.user.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+import pw.wecode.project.framework.jdbc.Page;
+import pw.wecode.project.framework.jdbc.ParamMap;
+import pw.wecode.project.framework.utils.StringUtils;
+import pw.wecode.project.framework.web.HtmlPage;
+import pw.wecode.project.framework.web.Mvc;
+import pw.wecode.project.framework.web.Result;
+import pw.wecode.project.framework.web.beetl.BeetlHtmlRender;
+import pw.wecode.project.framework.weixin.CustomImageMessage;
+import pw.wecode.project.framework.weixin.UploadMediaResponse;
+import pw.wecode.project.framework.weixin.WeixinService;
+
+import javax.imageio.ImageIO;
+import javax.inject.Inject;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+
+/**
+ * Created by lingh on 2017/4/6.
+ */
+@Controller
+@RequestMapping("/wx/article/")
+public class ArticleController {
+    private static final Logger logger = LoggerFactory.getLogger(ArticleController.class);
+    @Value("${resHost}")
+    private String resHost;
+    @Value("${host}")
+    private String host;
+    @Inject
+    private ArticleService articleService;
+    @Inject
+    private ArticleCategoryService articleCategoryService;
+    @Inject
+    private PictureService pictureService;
+    @Inject
+    private ConfigService configService;
+    @Inject
+    private WeixinService weixinService;
+    @Inject
+    private PictureGenerator pictureGenerator;
+    @Inject
+    private BeetlHtmlRender beetlHtmlRender;
+    @Inject
+    private ArticleCommentService articleCommentService;
+    @Inject
+    private UserCategoryService userCategoryService;
+    @Inject
+    private UserFollowService userFollowService;
+    @Inject
+    private PointConfigService pointConfigService;
+    @Inject
+    private UserService userService;
+    @Inject
+    private UserHisService userHisService;
+    @Inject
+    private SearchService searchService;
+
+    @Inject
+    private BannerService bannerService;
+
+    @Inject
+    private MessageService messageService;
+
+    @Inject
+    private CommentService commentService;
+
+    @Inject
+    private MerchantService merchantService;
+
+    @RequestMapping("index")
+    public ModelAndView index(SearchRequest searchRequest) {
+        searchRequest.setFunctionType("资讯");
+        ModelAndView mav = new ModelAndView("weixin/article/index");
+        User user = Mvc.context().sGet(User.SESSION_KEY);
+        String cids = merchantService.queryByUid(user.getId());
+        List<ArticleCategory> topCategories = new ArrayList<>(articleCategoryService.getTopCategory().values());
+        if (searchRequest.getCid() == 0) {
+            searchRequest.setTag(Article.TAG_REC);
+        }
+        if (StringUtils.hasText(searchRequest.getKeyword())) {
+            searchService.save(user.getId(), searchRequest.getKeyword());
+        }
+        Set<Integer> idSet = userCategoryService.getSubscribed(user.getId());
+        for (ArticleCategory topCategory : topCategories) {
+            for (ArticleCategory category : topCategory.getArticleCategoryList()) {
+                if (idSet.contains(category.getId())) {
+                    topCategory.setSubscribed(true);
+                }
+            }
+        }
+        Page<Article> articlePage = articleService.search(user.getId(), searchRequest);
+        mav.addObject("topCategories", topCategories);
+        mav.addObject("articlePage", articlePage);
+        mav.addObject("searchRequest", searchRequest);
+        mav.addObject("cids", cids);
+        searchRequest = new SearchRequest();
+        searchRequest.setPageNumber(1);
+        searchRequest.setPageSize(1);
+        searchRequest.setTag(Article.TAG_AD);
+        List<Article> articles = articleService.search(user.getId(), searchRequest).getData();
+        if (articles.size() > 0) {
+            mav.addObject("adArticle", articles.get(0));
+        }
+        return mav;
+    }
+
+    @RequestMapping("intro")
+    public ModelAndView intro(SearchRequest searchRequest) {
+        ModelAndView mav = new ModelAndView("weixin/article/intro");
+        User user = Mvc.context().sGet(User.SESSION_KEY);
+        List<ArticleCategory> topCategories = new ArrayList<>(articleCategoryService.getTopCategory().values());
+        if (searchRequest.getCid() == 0) {
+            searchRequest.setTag(Article.TAG_REC);
+        }
+        if (StringUtils.hasText(searchRequest.getKeyword())) {
+            searchService.save(user.getId(), searchRequest.getKeyword());
+        }
+        Set<Integer> idSet = userCategoryService.getSubscribed(user.getId());
+        for (ArticleCategory topCategory : topCategories) {
+            for (ArticleCategory category : topCategory.getArticleCategoryList()) {
+                if (idSet.contains(category.getId())) {
+                    topCategory.setSubscribed(true);
+                }
+            }
+        }
+        Page<Article> articlePage = articleService.search(user.getId(), searchRequest);
+        mav.addObject("topCategories", topCategories);
+        mav.addObject("articlePage", articlePage);
+        mav.addObject("searchRequest", searchRequest);
+        searchRequest = new SearchRequest();
+        searchRequest.setPageNumber(1);
+        searchRequest.setPageSize(1);
+        searchRequest.setTag(Article.TAG_AD);
+        List<Article> articles = articleService.search(user.getId(), searchRequest).getData();
+        if (articles.size() > 0) {
+            mav.addObject("adArticle", articles.get(0));
+        }
+        return mav;
+    }
+
+    @RequestMapping("pic_whole")
+    public ModelAndView pic_whole(SearchRequest searchRequest) {
+        searchRequest.setFunctionType("图库");
+        ModelAndView mav = new ModelAndView("weixin/article/pic_whole");
+        User user = Mvc.context().sGet(User.SESSION_KEY);
+        String cids = merchantService.queryByUid(user.getId());
+        List<ArticleCategory> topCategories = new ArrayList<>(articleCategoryService.getTopCategoryOnImg().values());
+        if (searchRequest.getCid() == 0) {
+            searchRequest.setTag(Article.TAG_REC);
+        }
+        if (StringUtils.hasText(searchRequest.getKeyword())) {
+            searchService.save(user.getId(), searchRequest.getKeyword());
+        }
+        Set<Integer> idSet = userCategoryService.getSubscribed(user.getId());
+        for (ArticleCategory topCategory : topCategories) {
+            for (ArticleCategory category : topCategory.getArticleCategoryList()) {
+                if (idSet.contains(category.getId())) {
+                    topCategory.setSubscribed(true);
+                }
+            }
+        }
+        Page<Article> articlePage = articleService.search(user.getId(), searchRequest);
+        mav.addObject("cids", cids);
+        mav.addObject("topCategories", topCategories);
+        mav.addObject("articlePage", articlePage);
+        mav.addObject("searchRequest", searchRequest);
+        searchRequest = new SearchRequest();
+        searchRequest.setPageNumber(1);
+        searchRequest.setPageSize(1);
+        searchRequest.setTag(Article.TAG_AD);
+        List<Article> articles = articleService.search(user.getId(), searchRequest).getData();
+        if (articles.size() > 0) {
+            mav.addObject("adArticle", articles.get(0));
+        }
+        return mav;
+    }
+
+    @RequestMapping("my")
+    public ModelAndView my(@RequestParam(value = "uid", required = false) Integer uid) {
+        ModelAndView mav = new ModelAndView("weixin/article/my");
+        User articleUser;
+        if (uid == null) {
+            articleUser = Mvc.context().sGet(User.SESSION_KEY);
+        } else {
+            articleUser = userService.get(uid);
+        }
+        String cids = merchantService.queryByUid(articleUser.getId());
+        SearchRequest searchRequest = new SearchRequest();
+        searchRequest.setPageNumber(1);
+        searchRequest.setPageSize(1);
+        searchRequest.setTag(Article.TAG_AD);
+        List<Article> articles = articleService.search(articleUser.getId(), searchRequest).getData();
+        if (articles.size() > 0) {
+            mav.addObject("adArticle", articles.get(0));
+        }
+        mav.addObject("articles", articleService.search(articleUser.getId(), new SearchRequest(), true).getData());
+        mav.addObject("articleUser", articleUser);
+        mav.addObject("cids", cids);
+        return mav;
+    }
+
+    @ResponseBody
+    @RequestMapping("my-more")
+    public Result<HtmlPage> mymore(SearchRequest search, @RequestParam(value = "uid", required = false) Integer uid) {
+        SearchRequest searchRequest = new SearchRequest();
+        searchRequest.setPageNumber(1);
+        searchRequest.setPageSize(1);
+        searchRequest.setTag(Article.TAG_AD);
+        ParamMap<String, Object> paramMap = new ParamMap();
+        List<Article> articles = articleService.search(uid, searchRequest).getData();
+        if (articles.size() > 0) {
+            paramMap.put("adArticle", articles.get(0));
+        }
+        List<Article> articleList = articleService.search(uid, search, true).getData();
+        paramMap.add("articles", articleList);
+        String html = beetlHtmlRender.render("weixin/article/tpl_list_my", paramMap);
+        HtmlPage htmlPage = new HtmlPage();
+        if (articleList.size() > 0) {
+            htmlPage.setRecord(articleList.get(articleList.size() - 1));
+        }
+        htmlPage.setRecordCount(articleList.size());
+        htmlPage.setHtml(html);
+        return new Result<>(htmlPage);
+    }
+
+    @ResponseBody
+    @RequestMapping("search")
+    public Result<HtmlPage> search(SearchRequest request) {
+        request.fix();
+        User user = Mvc.context().sGet(User.SESSION_KEY);
+        String cids = merchantService.queryByUid(user.getId());
+        if (request.getCid() == 0) {
+            request.setTag(Article.TAG_REC);
+        }
+        if (StringUtils.hasText(request.getKeyword())) {
+            searchService.save(user.getId(), request.getKeyword());
+        }
+        Page<Article> articlePage = articleService.search(user.getId(), request);
+        String html = beetlHtmlRender.render("weixin/article/tpl_article_list", new ParamMap<String,Object>("articlePage", articlePage).add("cids",cids));
+        HtmlPage htmlPage = new HtmlPage();
+        htmlPage.setHtml(html);
+        htmlPage.setRecordCount(articlePage.getData().size());
+        if (articlePage.getData().size() > 0) {
+            if (request.isOld()) {
+                htmlPage.setRecord(articlePage.getData().get(articlePage.getData().size() - 1));
+            } else {
+                htmlPage.setRecord(articlePage.getData().get(0));
+            }
+        }
+        return new Result<>(htmlPage);
+    }
+
+    @ResponseBody
+    @RequestMapping("shareQrcode")
+    public Result shareQrcode(@RequestParam("id") int id) {
+        User user = Mvc.context().sGet(User.SESSION_KEY);
+        Article article = articleService.get(id);
+        if (article == null) {
+            logger.error("资讯不存在, id:{}", id);
+            return new Result(Result.CODE_ERROR, "资讯不存在, 编号: " + id);
+        }
+        String webroot = Mvc.getWebRoot();
+        File logoFile = new File(webroot + "/img/qrcode_logo.png");
+        File txtFile = new File(webroot + "/img/qrcode_txt.png");
+        File articleFile = new File(webroot + article.getFirstPic());
+        BufferedImage bufferedImage = pictureGenerator.generate(logoFile, txtFile, articleFile, host + "/wx/article/" + id + ".html");
+        try {
+            ByteArrayOutputStream bout = new ByteArrayOutputStream();
+            ImageIO.write(bufferedImage, "png", bout);
+            UploadMediaResponse uploadMediaResponse = weixinService.uploadMedia("image", System.currentTimeMillis() + ".png", bout.toByteArray());
+            weixinService.sendCustomMessage(new CustomImageMessage(user.getOpenid(), new CustomImageMessage.Image(uploadMediaResponse.getMedia_id())));
+            return new Result();
+        } catch (Exception e) {
+            logger.error("");
+            return new Result(Result.CODE_ERROR, "发送至公众号失败");
+        }
+    }
+
+    @RequestMapping("create")
+    public ModelAndView create(@RequestParam(value = "id", required = false) Integer id) {
+        ModelAndView mav = new ModelAndView("weixin/article/create");
+        List<ArticleCategory> topCategories = new ArrayList<>(articleCategoryService.getTopCategory().values());
+        mav.addObject("topCategories", topCategories);
+        mav.addObject("watermarks", pictureService.getAllWatermark());
+        if (id != null) {
+            Article article = articleService.get(id);
+            mav.addObject("article", article);
+            if (article != null) {
+                mav.addObject("pics", pictureService.getByIds(article.getPictureIds()));
+            }
+        }
+        return mav;
+    }
+
+    @RequestMapping("{id}")
+    public ModelAndView info(@PathVariable("id") int id) {
+        ModelAndView mav = new ModelAndView("weixin/article/info");
+        User user = Mvc.context().sGet(User.SESSION_KEY);
+        Article article = articleService.get(id);
+        if (article.getUser() != null) {
+            UserFollow userFollow = userFollowService.get(article.getUser().getId(), user.getId());
+            if (userFollow != null) {
+                article.getUser().setFollowed(true);
+            }
+        }
+        ArticleComment articleComment = articleCommentService.get(article.getId(), user.getId(), ArticleComment.TYPE_FAVORITE);
+        if (articleComment != null) {
+            mav.addObject("favorited", true);
+        } else {
+            mav.addObject("favorited", false);
+        }
+        articleComment = articleCommentService.get(article.getId(), user.getId(), ArticleComment.TYPE_LIKE);
+        if (articleComment != null) {
+            mav.addObject("liked", true);
+        } else {
+            mav.addObject("liked", false);
+        }
+        if (article.getUid() != user.getId()) {
+            int point = pointConfigService.get().getView();
+            if (point > 0) {
+                UserHis userHis = userHisService.get(user.getId(), UserHis.TYPE_VIEW, id);
+                if (userHis == null) {
+                    userService.incPoint(user, point, UserHis.TYPE_VIEW, id);
+                }
+            }
+        }
+
+        articleService.view(user.getId(), article.getId());
+        List<ArticleComment> lists=articleCommentService.query(article.getId(),ArticleComment.TYPE_COMMENT);
+        int CommentCount=lists.size();
+        mav.addObject("CommentCount", CommentCount);
+        mav.addObject("Lists", lists);
+        mav.addObject("article", article);
+        mav.addObject("pics", pictureService.getByIds(article.getPictureIds()));
+        mav.addObject("likes", articleCommentService.query(article.getId(), ArticleComment.TYPE_LIKE));
+        return mav;
+    }
+
+    @RequestMapping("category")
+    public ModelAndView category() {
+        User user = Mvc.context().sGet(User.SESSION_KEY);
+        ModelAndView mav = new ModelAndView("weixin/article/category");
+        List<ArticleCategory> topCategories = new ArrayList<>(articleCategoryService.getTopCategory().values());
+        Set<Integer> idSet = userCategoryService.getSubscribed(user.getId());
+        for (ArticleCategory topCategory : topCategories) {
+            for (ArticleCategory articleCategory : topCategory.getArticleCategoryList()) {
+                if (idSet.contains(articleCategory.getId())) {
+                    articleCategory.setSubscribed(true);
+                }
+            }
+        }
+        mav.addObject("topCategories", topCategories);
+        mav.addObject("hotSearchList", searchService.get());
+        mav.addObject("hisSearchList", searchService.get(user.getId()));
+        return mav;
+    }
+
+    @RequestMapping("category/subscribe")
+    @ResponseBody
+    public Result subscribeCategory(@RequestParam("id") int id, @RequestParam("subscribe") boolean subscribe) {
+        User user = Mvc.context().sGet(User.SESSION_KEY);
+        userCategoryService.subscribe(user.getId(), id, subscribe);
+        return new Result();
+    }
+
+    @ResponseBody
+    @RequestMapping("save")
+    public Result<Article> save(Article article, @RequestParam("pics") String pics) {
+        logger.debug("收到创建资讯请求, article:{} pics:{}", article, pics);
+        if (article == null) {
+            return new Result<>(Result.CODE_ERROR, "文章不存在");
+        }
+        if (article.getWmId() == 0 &&article.getType()==1) {
+            return new Result<>(Result.CODE_ERROR, "请选择水印");
+        }
+        if (article.getPid() == 0) {
+            return new Result<>(Result.CODE_ERROR, "请选择频道");
+        }
+        if (article.getCid() == 0) {
+            return new Result<>(Result.CODE_ERROR, "请选择分类");
+        }
+//        if (!StringUtils.hasText(pics)&&article.getType()==1) {
+//            return new Result<>(Result.CODE_ERROR, "请上传图片");
+//        }
+//        if (!StringUtils.hasText(article.getVideoUrl())&&article.getType()==2) {
+//            return new Result<>(Result.CODE_ERROR, "请上传视频");
+//        }
+        if (!StringUtils.hasText(article.getTitle())) {
+            return new Result<>(Result.CODE_ERROR, "请输入标题");
+        }
+        if (!StringUtils.hasText(article.getContent())) {
+            return new Result<>(Result.CODE_ERROR, "请输入正文");
+        }
+        Article old = null;
+        if (article.getId() > 0) {
+            old = articleService.get(article.getId());
+            if (old != null) {
+                if (StringUtils.hasText(old.getPictureIds())) {
+                    pictureService.deleteByIds(old.getPictureIds());
+                }
+                article.setCreateTime(old.getCreateTime());
+                article.setUid(old.getUid());
+            }
+        } else {
+            User user = Mvc.context().sGet(User.SESSION_KEY);
+            article.setUid(user.getId());
+        }
+        List<Picture> pictures = parsePics(article, pics, article.getPoint());
+        if (pictures.size() > 0 && article.getType()==1) {
+            pictureService.waterMark(pictures, article.getWmId(), article.getWmPos());
+            pictureService.batchCreate(pictures);
+            StringBuilder pictureIds = new StringBuilder();
+            for (Picture picture : pictures) {
+                pictureIds.append(picture.getId()).append(",");
+            }
+            pictureIds.deleteCharAt(pictureIds.length() - 1);
+            article.setPictureIds(pictureIds.toString());
+            article.setFirstPic(pictures.get(0).getUrl());
+            if (article.getType() == Article.TYPE_PICTEXT) {
+                String content = article.getContent();
+                for (Picture picture : pictures) {
+                    content = content.replaceAll(picture.getSrcUrl(), picture.getUrl());
+                }
+                article.setContent(content);
+            }
+        }
+        if (article.getType()==2)
+            article.setFirstPic(article.getVideoImg());
+        articleService.save(article);
+        return new Result<>(article);
+    }
+
+    @ResponseBody
+    @RequestMapping("like")
+    public Result like(@RequestParam("id") int id) {
+        User user = Mvc.context().sGet(User.SESSION_KEY);
+        if (articleService.like(user.getId(), id)) {
+            int point = pointConfigService.get().getLike();
+            if (point > 0) {
+                UserHis userHis = userHisService.get(user.getId(), UserHis.TYPE_LIKE, id);
+                if (userHis == null) {
+                    userService.incPoint(user, point, UserHis.TYPE_LIKE, id);
+                }
+            }
+        }
+        return new Result();
+    }
+
+    @ResponseBody
+    @RequestMapping("unlike")
+    public Result unlike(@RequestParam("id") int id) {
+        User user = Mvc.context().sGet(User.SESSION_KEY);
+        articleService.unlike(user.getId(), id);
+        return new Result();
+    }
+
+    @ResponseBody
+    @RequestMapping("favorite")
+    public Result favorite(@RequestParam("id") int id) {
+        User user = Mvc.context().sGet(User.SESSION_KEY);
+        if (articleService.favorite(user.getId(), id)) {
+            user.setFavoriteCount(user.getFavoriteCount() + 1);
+            int point = pointConfigService.get().getFavorite();
+            if (point > 0) {
+                UserHis userHis = userHisService.get(user.getId(), UserHis.TYPE_FAVORITE, id);
+                if (userHis == null) {
+                    userService.incPoint(user, point, UserHis.TYPE_FAVORITE, id);
+                }
+            }
+        }
+        return new Result();
+    }
+
+    @ResponseBody
+    @RequestMapping("unfavorite")
+    public Result unfavorite(@RequestParam("id") int id) {
+        User user = Mvc.context().sGet(User.SESSION_KEY);
+        if (articleService.unfavorite(user.getId(), id)) {
+            user.setFavoriteCount(user.getFavoriteCount() - 1);
+        }
+        return new Result();
+    }
+
+    @ResponseBody
+    @RequestMapping("share")
+    public Result share(@RequestParam("id") int id) {
+        User user = Mvc.context().sGet(User.SESSION_KEY);
+        logger.debug("用户分享资讯, user:{} id:{}", user, id);
+        if (articleCommentService.share(user.getId(), id) > 0) {
+            int point = pointConfigService.get().getShare();
+            if (point > 0) {
+                UserHis userHis = userHisService.get(user.getId(), UserHis.TYPE_FAVORITE, id);
+                if (userHis == null) {
+                    userService.incPoint(user, point, UserHis.TYPE_SHARE, id);
+                }
+            }
+        }
+        return new Result();
+    }
+
+    @ResponseBody
+    @RequestMapping("delete")
+    public Result delete(@RequestParam("id") int id) {
+        Article article = articleService.get(id);
+        if (article == null) {
+            return new Result(Result.CODE_ERROR, "资讯不存在");
+        }
+        User user = Mvc.context().sGet(User.SESSION_KEY);
+        if (article.getUid() != user.getId()) {
+            return new Result(Result.CODE_ERROR, "请勿删除他人资讯");
+        }
+        articleService.delete(id);
+        return new Result();
+    }
+
+    private List<Picture> parsePics(Article article, String pics, int point) {
+        List<Picture> pictures = new ArrayList<>();
+        if (!StringUtils.hasText(pics)) {
+            return pictures;
+        }
+        String[] picArr = pics.split(",");
+        for (String pic : picArr) {
+            if (pic.startsWith(resHost)) {
+                pic = pic.substring(resHost.length());
+            }
+            Picture picture = new Picture();
+            picture.setUid(article.getUid());
+            picture.setSrcUrl(pic);
+            picture.setCreateTime(new Date());
+            pictures.add(picture);
+        }
+        return pictures;
+    }
+
+    @RequestMapping("imgCategory")
+    public ModelAndView imgCategory() {
+        User user = Mvc.context().sGet(User.SESSION_KEY);
+        ModelAndView mav = new ModelAndView("weixin/article/imgCategory");
+        List<ArticleCategory> topCategories = new ArrayList<>(articleCategoryService.getTopCategoryOnImg().values());
+        Set<Integer> idSet = userCategoryService.getSubscribed(user.getId());
+        for (ArticleCategory topCategory : topCategories) {
+            for (ArticleCategory articleCategory : topCategory.getArticleCategoryList()) {
+                if (idSet.contains(articleCategory.getId())) {
+                    articleCategory.setSubscribed(true);
+                }
+            }
+        }
+        mav.addObject("topCategories", topCategories);
+        mav.addObject("hotSearchList", searchService.get());
+        mav.addObject("hisSearchList", searchService.get(user.getId()));
+        return mav;
+    }
+}

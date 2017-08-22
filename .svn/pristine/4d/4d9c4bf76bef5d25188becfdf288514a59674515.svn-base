@@ -1,0 +1,6 @@
+env=dev
+version=20170323
+#host=http://dc.wecode.pw
+#resHost=http://dc.wecode.pw
+host=http://120.77.71.143:443
+resHost=http://120.77.71.143:443

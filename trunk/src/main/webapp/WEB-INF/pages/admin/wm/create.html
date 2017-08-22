@@ -1,0 +1,41 @@
+<%
+layout("/admin/layout.html",{
+}){
+%>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">新增水印</h3>
+            </div>
+            <form id="wm-form" role="form" method="post" action="/admin/wm/save" enctype="multipart/form-data">
+                <div class="box-body">
+                    <div class="form-group">
+                        <label for="file">水印图片</label>
+                        <input type="file" id="file" name="file">
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#wm-form').ajaxform({
+            "complete": function (result) {
+                result = JSON.parse(result);
+                if (result.code !== 0) {
+                    jewelry.notify(result.msg, "error");
+                } else {
+                    jewelry.notify("操作成功", function () {
+                        jewelry.redirect("/admin/wm/index.html");
+                    });
+                }
+            }
+        });
+    });
+</script>
+<%}%>

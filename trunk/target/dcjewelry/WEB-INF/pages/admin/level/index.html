@@ -1,0 +1,45 @@
+<%
+layout("/admin/layout.html",{
+}){
+%>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">等级配置</h3>
+                <a href="/admin/level/create.html" class="btn btn-info">添加</a>
+                <button class="btn btn-info btn-del">删除</button>
+            </div>
+            <div class="box-body">
+                <table id="dt" data-options="'url':'/admin/level/query', 'serverSide':false"
+                       class="dataTables table table-striped table-bordered"
+                       cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th data-options="'data':'level'">等级</th>
+                        <th data-options="'data':'point'">积分</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#btn-del').click(function () {
+        var row = jewelry.dtSingleSelected('dt');
+        if (!row) {
+            return
+        }
+        $.post('/admin/level/delete', {level: row.level}, function (result) {
+            if (result.code !== 0) {
+                jewelry.notify(result.message, 'error')
+                return
+            }
+            jewelry.notify('删除成功', 'success', function () {
+                jewelry.reloadDatatable('dt')
+            })
+        })
+    })
+</script>
+<%}%>

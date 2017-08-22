@@ -1,0 +1,40 @@
+<%
+layout("/admin/layout.html",{
+}){
+%>
+<form class="form-horizontal" role="form">
+    <div class="form-group">
+        <label for="content" class="col-sm-1 control-label">通知内容</label>
+
+        <div class="col-lg-10">
+            <textarea id="content" name="content" cols="100" rows="12">${article.content!}</textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-lg-8 col-lg-offset-2">
+            <button type="button" id="save-btn" class="btn btn-info">保存</button>
+        </div>
+    </div>
+</form>
+<script>
+    $(document).ready(function () {
+        $('#save-btn').click(function (e) {
+            var content = $('#content').val();
+            e.preventDefault()
+            if (content === '') {
+                jewelry.notify('请输入通知内容', "warning");
+                return
+            }
+            $.post('/admin/notice/save', {content: content}, function (result) {
+                if (result.code !== 0) {
+                    jewelry.notify(result.msg, "error");
+                } else {
+                    jewelry.notify("操作成功", function () {
+                        jewelry.redirect("/admin/notice/index.html");
+                    });
+                }
+            })
+        })
+    });
+</script>
+<%}%>

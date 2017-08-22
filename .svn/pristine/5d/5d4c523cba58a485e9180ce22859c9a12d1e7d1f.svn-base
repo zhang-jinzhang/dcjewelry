@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>大巢珠宝</title>
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <link rel="stylesheet" href="../../css/reset.css?v=${version!}">
+    <link rel="stylesheet" href="../../css/style.css?v=${version!}">
+    <script type="text/javascript" src="../../js/zepto.min.js"></script>
+    <script type="text/javascript" src="../../js/public.js"></script>
+    <script type="text/javascript" src="../../js/user/edit.js"></script>
+</head>
+<body>
+  <div class="integral-wrap">
+    <div class="head bg-white">
+      <div class="num">
+        <span>珠宝币</span>
+        <p>1000</p>
+      </div>
+      <a href="" class="help-link clearfix">
+        <i class="help-icon fl"></i>
+        <p class="fl">规则说明</p>
+      </a>
+    </div>
+    <div class="content bg-white">
+      <div class="tit">
+        <h3 class="bg-white">积分明细</h3>
+        <div class="br-1"></div>
+      </div>
+      <ul class="integral-list">
+        <li class="item clearfix">
+          <div class="fl">
+            <h4 class="title">发布资讯</h4>
+            <p class="date">2017-03-30 18:20:15  拷贝</p>
+          </div>
+          <span class="num fr">+5</span>
+        </li>
+        <li class="item clearfix">
+          <div class="fl">
+            <h4 class="title">发布资讯</h4>
+            <p class="date">2017-03-30 18:20:15  拷贝</p>
+          </div>
+          <span class="num fr">+5</span>
+        </li>
+        <li class="item clearfix">
+          <div class="fl">
+            <h4 class="title">发布资讯</h4>
+            <p class="date">2017-03-30 18:20:15  拷贝</p>
+          </div>
+          <span class="num fr">+5</span>
+        </li>
+        <li class="item clearfix">
+          <div class="fl">
+            <h4 class="title">发布资讯</h4>
+            <p class="date">2017-03-30 18:20:15  拷贝</p>
+          </div>
+          <span class="num fr">+5</span>
+        </li>
+        <li class="item clearfix">
+          <div class="fl">
+            <h4 class="title">发布资讯</h4>
+            <p class="date">2017-03-30 18:20:15  拷贝</p>
+          </div>
+          <span class="num fr">+5</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="bottom-box clearfix">
+    <footer class="bottom-nav bg-white clearfix">
+      <a class="home fl" href="">
+        <span class="home-icon"></span>
+        <p>首页</p>
+      </a>
+      <a class="zixun active" href="">
+        <span class="zixun-icon"></span>
+        <p>资讯中心</p>
+      </a>
+      <a class="mapdepot fr" href="">
+        <span class="mapdepot-icon"></span>
+        <p>我的图库</p>
+      </a>
+    </footer>
+  </div>
+</body>
+</html>

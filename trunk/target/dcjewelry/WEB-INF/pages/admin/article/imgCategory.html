@@ -1,0 +1,208 @@
+<%
+layout("/admin/layout.html",{
+}){
+%>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">图库分类</h3>
+                <button id="add-btn-top" class="btn btn-info">新建频道</button>
+                <button id="add-btn" class="btn btn-info">新建分类</button>
+                <button id="edit-btn" class="btn btn-info">编辑</button>
+                <button id="del-btn" class="btn btn-danger">删除</button>
+            </div>
+            <div class="box-body">
+                <table id="dt" data-options="'url':'/admin/article/queryImgCategory', 'serverSide':false"
+                       class="dataTables table table-striped table-bordered"
+                       cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <td style="display:none;" data-options="'data': 'id'" />
+                        <th data-options="'data':'name'">频道</th>
+                        <th data-options="'data':'pid', 'render':'nameRender'">分类</th>
+                        <th data-options="'data': 'icon', 'render':'jewelry.imgRender'">图标</th>
+                        <th data-options="'data': 'pos'">排序</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<form id="form-category" role="form" method="post" action="/admin/article/saveImgCategory" enctype="multipart/form-data">
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">新建频道</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group top-category">
+                        <label>频道</label>
+                        <select id="pidSel" name="pid" class="btn btn-default dropdown-toggle">
+                            <option value="0">请选择</option>
+                        </select>
+                    </div>
+                    <div class="form-group category">
+                        <label>分类</label>
+                        <input id="name" name="name" class="form-control" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label>图标</label>
+                        <input type="file" id="file" name="file">
+                        <img id="preview" src="#" class="img-responsive">
+                    </div>
+                    <div class="form-group">
+                        <label>排序</label>
+                        <input id="pos" name="pos" class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" id="id" name="id" value="">
+                    <button type="submit" class="btn btn-primary" id="save">保存</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    $(document).ready(function () {
+        var type = 0;
+        $("a.del").click(function (e) {
+            var id = $(this).attr('data-id');
+            e.preventDefault();
+            $.post('/admin/article/deleteCategory', {id: id}, function (result) {
+                if (result.code !== 0) {
+                    jewelry.notify(result.message, 'error');
+                    return;
+                }
+                jewelry.notify("删除成功", function () {
+                    jewelry.reloadDatatable('dt');
+                });
+            });
+        });
+        $('#add-btn-top').click(function () {
+            type = 0
+            updatePidSel(function () {
+                $("#myModalLabel").html("新建频道");
+                $('div.top-category').hide();
+                $('div.category label').html("频道");
+                $('#id').val('0');
+                $('#name').val('');
+                $('#pidSel').val('0');
+                $('#pos').val('0');
+                $('#preview').hide();
+                $('#modal').modal('show');
+            });
+        });
+        $('#add-btn').click(function () {
+            type = 1;
+            updatePidSel(function () {
+                $("#myModalLabel").html("新建分类");
+                $('#id').val('0');
+                $('#name').val('');
+                $('#pidSel').val('0');
+                $('#pos').val('0');
+                $('div.top-category').show();
+                $('div.category label').html("分类");
+                $('#preview').hide();
+                $('#modal').modal('show');
+            });
+        });
+        $('#edit-btn').click(function () {
+            var data = jewelry.dtSingleSelected('dt');
+            if (!data) {
+                return;
+            }
+            updatePidSel(function () {
+                if (data.pid > 0) {
+                    $("#myModalLabel").html("编辑分类");
+                    $('div.category label').html("分类");
+                    $('div.top-category').show();
+                    type = 1;
+                } else {
+                    $("#myModalLabel").html("编辑频道");
+                    $('div.category label').html("频道");
+                    $('div.top-category').hide();
+                    type = 0;
+                }
+                $('#id').val(data.id);
+                $('#name').val(data.name);
+                $('#pidSel').val(data.pid);
+                $('#pos').val(data.pos);
+                $('#preview').attr('src', data.icon).show();
+                $('#modal').modal('show');
+            });
+        });
+        $('#del-btn').click(function () {
+            jewelry.deleteSelected('dt', '/admin/article/deleteCategory');
+        });
+
+        $('#form-category').ajaxform({
+            "before": function () {
+                if (type == 1) {
+                    if ($('#pidSel').val() === '0') {
+                        jewelry.notify('请选择频道', 'warning');
+                        return false;
+                    }
+                    if ($('#name').val() === '') {
+                        jewelry.notify('请输入分类名称', 'warning');
+                        return false;
+                    }
+                    if ($('#file').val() === '' && $('#id').val() === '0') {
+                        jewelry.notify('请上传分类图标', 'warning');
+                        return false;
+                    }
+                } else {
+                    if ($('#name').val() === '') {
+                        jewelry.notify('请输入频道名称', 'warning');
+                        return false;
+                    }
+                    if ($('#file').val() === '' && $('#id').val() === '0') {
+                        jewelry.notify('请上传频道图标', 'warning');
+                        return false;
+                    }
+                }
+
+                return true;
+            },
+            "complete": function (result) {
+                result = JSON.parse(result);
+                if (result.code !== 0) {
+                    jewelry.notify(result.message, 'error');
+                    return;
+                }
+                jewelry.notify('保存成功', function () {
+                    jewelry.reload()
+                    $('#modal').modal('hide');
+                });
+            }
+        });
+    });
+
+    function updatePidSel(callback) {
+        $.post('/admin/article/queryTopCategoryOnImg', function (result) {
+            $('#pidSel').find('option').remove();
+            $('#pidSel').append('<option value="0">请选择</option>');
+            for (var i = 0; i < result.length; i++) {
+                $('#pidSel').append('<option value="' + result[i].id + '">' + result[i].name + '</option>');
+            }
+            $('#pidSel').val('0');
+            if (typeof callback === 'function') {
+                callback();
+            }
+        });
+    }
+     function nameRender(data, type, row) {
+        if (row.pid > 0) {
+            return data;
+        } else {
+            return "";
+        }
+    }
+</script>
+<%}%>

@@ -1,0 +1,69 @@
+<%
+layout("/weixin/layout.html",{
+title:'关注',
+css:['index.css'],
+mavNav : 0
+}){
+%>
+<%if(follows.~size > 0){%>
+<script>
+    var oldest = {
+        id: '${follows[follows.~size-1].uid}',
+        createTime: '${follows[follows.~size-1].createTime, "yyyy-MM-dd HH:mm:ss"}'
+    };
+</script>
+<%}else{%>
+<script>
+    var oldest = {id: 0, createTime: ''};
+</script>
+<%}%>
+<div class="attention-wrap">
+    <ul class="subnav bg-white clearfix">
+        <li class="fl active">
+            <a href="/wx/follow/index.html">关注</a>
+        </li>
+        <li class="fl">
+            <a href="/wx/favorite/index.html">收藏</a>
+        </li>
+    </ul>
+    <div class="attention-list bg-white">
+        <%include("/weixin/follow/tpl_list.html"){}%>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        var refreshing = false;
+        $(window).scroll(function (event) {
+            if ($("body").height() - $(this).scrollTop() <= $(this).height()) {
+                if (refreshing) {
+                    return;
+                }
+                refreshing = true;
+                $.post('/wx/follow/more', {
+                    id: oldest.id,
+                    createTime: oldest.createTime,
+                    old: true
+                }, function (result) {
+                    refreshing = false;
+                    if (result.code !== 0) {
+                        return;
+                    }
+                    var htmlPage = result.data;
+                    if (htmlPage.recordCount > 0) {
+                        oldest.id = htmlPage.record.uid;
+                        oldest.createTime = htmlPage.record.createTime;
+                        $('div.attention-list').append(htmlPage.html);
+                    }
+                }, 'json')
+            }
+        });
+        $('a.unfollow-btn').live('click', function (e) {
+            var $a = $(this);
+            e.preventDefault()
+            jewelry.unfollow($a.attr('data-uid'), function () {
+                window.location.href = '/wx/follow/index.html'
+            })
+        })
+    })
+</script>
+<%}%>

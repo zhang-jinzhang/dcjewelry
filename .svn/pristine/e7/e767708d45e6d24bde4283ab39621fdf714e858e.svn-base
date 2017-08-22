@@ -1,0 +1,106 @@
+<%
+layout("/weixin/layout.html",{
+title:'珠宝仓',
+css:['index.css'],
+js:['jquery-2.0.3.min.js', 'FileAPI.min.js', 'my.js'],
+mavNav : 3
+}){
+%>
+<%if(articles.~size > 0){%>
+<script>
+    var oldest = {
+        id: '${articles[articles.~size-1].uid}',
+        updateTime: '${articles[articles.~size-1].createTime, "yyyy-MM-dd HH:mm:ss"}'
+    };
+</script>
+<%}else{%>
+<script>
+    var oldest = {id: 0, updateTime: ''};
+</script>
+<%}%>
+<div class="md-hd">
+    <div class="head-pic">
+      <a href="/wx/user/edit.html">
+        <img src="${articleUser.headimg!}" alt="" class="headimg">
+        <p class="name">${articleUser.nickname}</p>
+      </a>
+    </div>
+    <label class="md-hd-bg" id="headBg" for="bgFile" style="<%if(!isEmpty(articleUser.bgUrl)){%>background-image: url('${articleUser.bgUrl!}');<%}%>">
+      <input id="bgFile" type="file">
+    </label>
+</div>
+<div class="camera">
+	<p>今天</p>
+	<a href="/wx/article/create.html" class="camera-btn camera-icon"></a>
+</div>
+
+<div class="card-list md-card-list bg-white">
+    <%include("/weixin/article/tpl_list_my.html"){}%>
+</div>
+<div class="update" onclick="window.reload()">点击刷新</div>
+<script>
+    $(document).ready(function () {
+        var refreshing = false;
+        $(window).scroll(function (event) {
+            if ($("body").height() - $(this).scrollTop() <= $(this).height()) {
+                if (refreshing) {
+                    return;
+                }
+                refreshing = true;
+                $.post('/wx/article/my-more', {
+                    id: oldest.id,
+                    updateTime: oldest.updateTime,
+                    uid: '${articleUser.id}',
+                    old: true
+                }, function (result) {
+                    refreshing = false;
+                    if (result.code !== 0) {
+                        return;
+                    }
+                    var htmlPage = result.data;
+                    if (htmlPage.recordCount > 0) {
+                        oldest.id = htmlPage.record.id;
+                        oldest.updateTime = htmlPage.record.createTime;
+                        $('div.card-list').append(htmlPage.html);
+                    }
+                }, 'json')
+            }
+        });
+        $('a.del-btn').on('click', function (e) {
+            var $a = $(this);
+            e.preventDefault();
+            $.post('/wx/article/delete', {id: $a.attr('data-id')}, function (result) {
+                if (result.code !== 0) {
+                    alert(result.message)
+                    return
+                }
+                alert('删除成功')
+                window.location.href = '/wx/article/my.html'
+            }, 'json')
+        });
+
+        $('img.headimg').click(function (e) {
+            e.preventDefault()
+            window.location.href = '/wx/user/edit.html'
+        });
+        $('i.collect-icon').click(function (e) {
+            var $i = $(this),
+                    $span = $i.parent('div').find('span.favorite-count');
+            e.preventDefault()
+            e.stopPropagation()
+            if ($i.hasClass('active')) {
+                return
+            }
+            if ($i.attr('data-uid') == '${user.id}') {
+                return
+            }
+            jewelry.favorite($i.attr('data-id'), function () {
+                $i.addClass('active')
+                var count = parseInt($span.html())
+                count++
+                $span.html(count)
+            })
+        });
+    });
+</script>
+<%}%>

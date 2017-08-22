@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>大巢珠宝</title>
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <link rel="stylesheet" href="../../css/reset.css?v=${version!}">
+    <link rel="stylesheet" href="../../css/style.css?v=${version!}">
+    <script type="text/javascript" src="../../js/zepto.min.js"></script>
+    <script type="text/javascript" src="../../js/public.js"></script>
+    <script type="text/javascript" src="../../js/news/privateLetter.js"></script>
+</head>
+<body>
+  <div class="attention-wrap">
+    <ul class="subnav bg-white clearfix">
+      <li class="fl">
+        <a href="attention.html">通知</a>
+      </li>
+      <li class="fl active">
+        <a href="index.html">私信</a>
+      </li>
+    </ul>
+    <div class="card-list">
+      <div class="card-item card-item1 bg-white">
+        <div class="head">
+          <a class="head-pic" href="">
+            <img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1492105190777&amp;di=b065978260987147353390a980520c4f&amp;imgtype=0&amp;src=http%3A%2F%2Fwww.sinaimg.cn%2Fdy%2Fslidenews%2F21_img%2F2015_25%2F41065_4274461_115388.jpg" alt="">
+          </a>
+          <div class="box clearfix">
+            <div class="fl">
+              <a href="" class="name">李梦颖<span class="color-red">【未读】</span></a>
+              <span class="timer">2017-03-29 14:06</span>
+            </div>
+            <div class="fr">
+              <div class="card-hd-btn clearfix">
+                <a href="javascript:;" class="fr bg-red-btn btn-ml reply-btn">回复</a>
+                <a href="" class="fr br-blue-btn">+&nbsp;关注</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-item1-text">
+          <p>急需钻石珠宝及玛瑙手串各一枚，价值￥3999，￥ 2999，有意者私信！非诚勿扰！！</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-box clearfix">
+    <footer class="bottom-nav bg-white clearfix">
+      <a class="home fl" href="">
+        <span class="home-icon"></span>
+        <p>首页</p>
+      </a>
+      <a class="zixun active" href="">
+        <span class="zixun-icon"></span>
+        <p>资讯中心</p>
+      </a>
+      <a class="mapdepot fr" href="">
+        <span class="mapdepot-icon"></span>
+        <p>我的图库</p>
+      </a>
+    </footer>
+  </div>
+</body>
+</html>

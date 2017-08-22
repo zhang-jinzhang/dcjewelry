@@ -1,0 +1,9 @@
+package com.ceyi.project.dcjewelry.article;
+
+import com.ceyi.project.dcjewelry.admin.DatatablesVo;
+
+/**
+ * Created by lingh on 2017/4/6.
+ */
+public class ArticleSearchVo extends DatatablesVo {
+}

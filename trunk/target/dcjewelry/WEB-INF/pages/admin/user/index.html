@@ -1,0 +1,56 @@
+<%
+layout("/admin/layout.html",{
+js:['admin/user.js']
+}){
+%>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box">
+            <div class="box-header">
+                <div class="row">
+                    <div class="col-lg-12">
+                        会员管理： 总会员：12030人， 珠宝同行：1202人
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <input id="keyword" type="text" class="form-control" placeholder="会员昵称/商家名称">
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <select id="typeSel">
+                                <option value="0">所有会员</option>
+                                <option value="1">普通会员</option>
+                                <option value="2">同行会员</option>
+                            </select>
+                            <button id="search-btn" type="button" class="btn btn-default">查询</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box-body">
+                <table id="dt" data-options="'url':'/admin/user/query', 'serverSide':true"
+                       class="dataTables table table-striped table-bordered"
+                       cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th data-options="'data': 'nickname'">昵称</th>
+                        <th data-options="'data': 'wechatId'">微信号</th>
+                        <th data-options="'data': 'level', 'render':'levelRender'">会员等级</th>
+                        <th data-options="'data':'sex', 'render':'sexRender'">性别</th>
+                        <th data-options="'data':'id', 'render':'merchantAreaRender'">区域</th>
+                        <th data-options="'data':'phone'">手机号</th>
+                        <th data-options="'data': 'point'">积分</th>
+                        <th data-options="'data': 'id', 'render':'merchantNameRender'">商家名称</th>
+                        <th data-options="'data': 'id', 'render':'merchantCidRender'">主营业务</th>
+                        <th data-options="'data': 'id', 'render':'merchantEmailRender'">邮箱</th>
+                        <th data-options="'data': 'id', 'render':'editLinkRender'">操作</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<%}%>

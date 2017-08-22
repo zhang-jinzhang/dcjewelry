@@ -1,0 +1,156 @@
+<div class="card-item bg-white">
+    <div class="head">
+        <a class="head-pic" href="/wx/article/my.html?uid=${article.uid}">
+            <img src="${article.user.headimg!}" alt="">
+        </a>
+        <div class="box clearfix">
+            <div class="fl">
+                <a href="" class="name clearfix" ><p>${article.user.nickname!}</p><i style="background:${strutil.contain(cids,(isEmpty(article.user.merchant.cid)?'null':article.user.merchant.cid+''))?'':'url(../img/icon/v.png) right center no-repeat /0.48rem 0.48rem;'}"></i></a>
+                <span class="timer">${article.createTime, "yyyy-MM-dd HH:mm"}</span>
+            </div>
+            <div class="fr info">
+                <div class="card-hd-btn clearfix">
+                    <!--<%for(tag in article.tagList){%>-->
+                    <!--<a href="" class="fr br-red-btn btn-ml">${tag}</a>-->
+                    <!--<%}%>-->
+                    <%if(user.id != article.user.id!){%>
+                    <a href="" data-uid="${article.user.id}" data-fid="${article.user.followed}" class="fr bg-red-btn follow ${article.user.followed?'follow-checked':''}"><%if(!article.user.followed!){%>+&nbsp;关注<%}else{%>已关注<%}%></a>
+                    <%}%>
+                </div>
+                <p class="zx-classify-text">分类：<span>${categoryMap[article.pid].name!}</span><span>${categoryMap[article.cid].name!}</span></p>
+            </div>
+        </div>
+    </div>
+    <!--无图片显示-->
+    <%if((isEmpty(article.pictures)&&article.type==1)||(isEmpty(article.videoUrl)&&article.type==2)||(article.type==0&&isEmpty(article.pictures))){%>
+    <div class="pic-text-item" style="display: block;">
+        <a href="/wx/article/${article.id}.html" class="clearfix">
+            <div class="no-map">
+                <h3>${article.title!}</h3>
+                <div class="recomment">
+                    <%if(strutil.contain(article.tags,'广告')){%>
+                    <span class="adv">广告</span>
+                    <%}else{%>
+                    <span>推荐</span>
+                    <%}%>
+                    <i class="peop">${article.viewCount}</i>
+                    <i class="award">${article.likeCount}</i>
+                    <i class="speak">${article.commentCount}</i>
+                </div>
+            </div>
+        </a>
+    </div>
+    <%}%>
+    <!--单张图片显示-->
+    <%if(!isEmpty(article.pictures)&&(article.pictures.~size==1||article.pictures.~size==2)&&!strutil.contain(article.tags,"广告")){%>
+    <div class="pic-text-item" style="display: block;">
+        <a href="/wx/article/${article.id}.html" class="clearfix">
+            <div class="con">
+                <h3>${article.title!}</h3>
+                <div class="recomment">
+                    <span>推荐</span>
+                    <i class="peop">${article.viewCount}</i>
+                    <i class="award">${article.likeCount}</i>
+                    <i class="speak">${article.commentCount}</i>
+                </div>
+            </div>
+            <img src="${resHost}${article.firstPic!}" alt="" class="pic">
+        </a>
+    </div>
+    <%}%>
+    <!--三张图片显示-->
+    <%if(!isEmpty(article.pictures)&&article.pictures.~size>=3){%>
+    <div class="pic-text-item" style="display: block;">
+        <a href="/wx/article/${article.id}.html" class="clearfix">
+            <div class="con-three">
+                <h3>${article.title!}</h3>
+                <ul>
+                    <%for(picture in article.pictures){%>
+                    <%if(pictureLP.index<4){%>
+                    <li class="item"><img src="${resHost}${picture.url!}" alt="" class="pic-three"></li>
+                    <%}%>
+                    <%}%>
+                </ul>
+                <div class="recomment">
+                    <%if(strutil.contain(article.tags,'广告')){%>
+                    <span class="adv">广告</span>
+                    <%}else{%>
+                    <span>推荐</span>
+                    <%}%>
+                    <i class="peop">${article.viewCount}</i>
+                    <i class="award">${article.likeCount}</i>
+                    <i class="speak">${article.commentCount}</i>
+                </div>
+            </div>
+        </a>
+    </div>
+    <%}%>
+    <!--单张大图显示-->
+    <%if(!isEmpty(article.pictures)&&article.pictures.~size==1&&strutil.contain(article.tags,"广告")){%>
+    <div class="pic-text-item" style="display: block;">
+        <a href="/wx/article/${article.id}.html" class="clearfix">
+            <div class="con-three ">
+                <h3>${article.title!}</h3>
+                <img src="${resHost}${article.firstPic!}" alt="" class="pic-big">
+                <div class="recomment">
+                    <span class="adv">广告</span>
+                    <i class="peop">${article.viewCount}</i>
+                    <i class="award">${article.likeCount}</i>
+                    <i class="speak">${article.commentCount}</i>
+                </div>
+            </div>
+        </a>
+    </div>
+    <%}%>
+    <!--显示视频-->
+    <%if(article.type==2&&!isEmpty(article.videoUrl)){%>
+    <div class="pic-text-item" style="display: block;">
+        <a href="/wx/article/${article.id}.html" class="clearfix toInfo">
+            <div class="con-three " id="video-contain">
+                <h3>${article.title!}</h3>
+                <video  class="pic-big" src="${resHost}${article.videoUrl!}" poster="${resHost}${article.videoImg!}" preload="meta"></video>
+                <div class="recomment">
+                    <%if(strutil.contain(article.tags,'广告')){%>
+                    <span class="adv">广告</span>
+                    <%}else{%>
+                    <span>推荐</span>
+                    <%}%>
+                    <i class="peop">${article.viewCount}</i>
+                    <i class="award">${article.likeCount}</i>
+                    <i class="speak">${article.commentCount}</i>
+                </div>
+                <div class="video-zhezhao"></div>
+            </div>
+        </a>
+    </div>
+    <%}%>
+    <!--<div class="feed-handle feed-handle1 clearfix">-->
+        <!--<div class="zx-heat fl">-->
+            <!--<i class="icon zx-heat-icon"></i>-->
+            <!--<span>${article.viewCount}</span>-->
+        <!--</div>-->
+        <!--<div class="zx-collect text-center">-->
+            <!--<i class="icon collect-icon <%if(article.favorited){%>active<%}%>" data-id="${article.id}"></i>-->
+            <!--<span class="favorite-count">${article.favoriteCount}</span>-->
+        <!--</div>-->
+        <!--<div class="zx-zan">-->
+            <!--<i class="icon zx-zan-icon <%if(article.liked){%>active<%}%>" data-id="${article.id}"></i>-->
+            <!--<span class="like-count">${article.likeCount}</span>-->
+        <!--</div>-->
+    <!--</div>-->
+</div>
+<script>
+	//样式切换
+	$(function(){
+		$("video.pic-big").click(function(e){
+		    e.preventDefault();
+		    $('.toInfo').click();
+			return false;
+		})
+		$("#video-contain video").click(function(){
+        	if($(".video-zhezhao").is(":visible")){
+        		return false;
+        	}
+        })
+	})
+</script>

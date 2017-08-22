@@ -1,0 +1,105 @@
+<%
+layout("/weixin/layout.html",{
+title:'发布需求',
+css:['index.css'],
+mavNav : 2
+}){
+%>
+<%if(requests.~size > 0){%>
+<script>
+    var oldest = {
+        id: '${requests[requests.~size-1].id}',
+        createTime: '${requests[requests.~size-1].createTime, "yyyy-MM-dd HH:mm:ss"}'
+    };
+</script>
+<%}else{%>
+<script>
+    var oldest = {id: 0, createTime: ''};
+</script>
+<%}%>
+<div class="attention-wrap">
+    <div class="peer-hd bg-white">
+        <a href="" class="user-ico"></a>
+        <a href="" class="edit-ico"></a>
+    </div>
+    <div class="card-list">
+        <%include("/weixin/request/tpl_request_list.html"){}%>
+    </div>
+</div>
+<%include("/weixin/tpl_user.html"){}%>
+<script>
+    $(document).ready(function () {
+        var refreshing = false;
+        $(window).scroll(function (event) {
+            if ($("body").height() - $(this).scrollTop() <= $(this).height()) {
+                if (refreshing) {
+                    return;
+                }
+                refreshing = true;
+                $.post('/wx/request/more', {
+                    id: oldest.id,
+                    createTime: oldest.createTime,
+                    old: true
+                }, function (result) {
+                    refreshing = false;
+                    if (result.code !== 0) {
+                        return;
+                    }
+                    var htmlPage = result.data;
+                    if (htmlPage.recordCount > 0) {
+                        oldest.id = htmlPage.record.id;
+                        oldest.createTime = htmlPage.record.createTime;
+                        $('div.card-list').append(htmlPage.html);
+                    }
+                }, 'json')
+            }
+        });
+        $('a.edit-ico').live('click', function (e) {
+            e.preventDefault()
+            dachao.textareaAlert('发布需求', function (message,img) {
+                $.post('/wx/request/create', {
+                    content: message
+                }, function (result) {
+                    if (result.code !== 0) {
+                        alert(result.message);
+                    } else {
+                        alert('发布需求成功');
+                        window.location.href = '/wx/request/index.html'
+                    }
+                })
+            }, 'json')
+        })
+        $('a.message-btn').live('click', function (e) {
+            var $a = $(this)
+            e.preventDefault()
+            dachao.textareaAlert('给' + $a.attr('data-nickname') + '私信', function (message,img) {
+                $.post('/wx/message/send', {
+                    fromUid: $a.attr('data-uid'),
+                    content: message,
+                    img: img
+                }, function (result) {
+                    if (result.code !== 0) {
+                        alert(result.message);
+                    } else {
+                        alert('发送私信成功');
+                    }
+                })
+            }, 'json')
+        })
+        $('a.follow-btn').live('click', function (e) {
+            var $a = $(this)
+            e.preventDefault()
+            jewelry.follow($a.attr('data-uid'), function () {
+                window.location.href = '/wx/request/index.html'
+            })
+        })
+        $('a.user-ico').on('click', function(e) {
+            e.preventDefault()
+            $("body").addClass("user-left-show");
+        })
+        $("#shade").on("click", function () {
+            $("body").removeClass("user-left-show");
+        });
+    })
+</script>
+<%}%>

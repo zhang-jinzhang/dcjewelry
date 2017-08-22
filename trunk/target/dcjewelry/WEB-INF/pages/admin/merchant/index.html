@@ -1,0 +1,68 @@
+<%
+layout("/admin/layout.html",{
+}){
+%>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">同行认证审核</h3>
+                <button id="btn-pass" class="btn btn-info">审核通过</button>
+                <button id="btn-fail" class="btn btn-info">审核失败</button>
+            </div>
+            <div class="box-body">
+                <table id="dt" data-options="'url':'/admin/merchant/query', 'serverSide':false"
+                       class="dataTables table table-striped table-bordered"
+                       cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th data-options="'data':'uid'">用户编号</th>
+                        <th data-options="'data':'name'">商家名称</th>
+                        <th data-options="'data':'user.phone'">手机</th>
+                        <th data-options="'data':'cid','render':'cidRender'">经营珠宝类型</th>
+                        <th data-options="'data':'area'">区域</th>
+                        <th data-options="'data':'boss'">法人</th>
+                        <th data-options="'data':'email'">邮箱</th>
+                        <th data-options="'data':'businessPic', 'render':'jewelry.imgRender'">证件</th>
+                        <th data-options="'data':'status', 'render':'statusRender'">状态</th>
+                        <th data-options="'data':'createTime'">申请时间</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#btn-pass').click(function (e) {
+        e.preventDefault()
+        updateStatus(1)
+    })
+    $('#btn-fail').click(function (e) {
+        e.preventDefault()
+        updateStatus(2)
+    })
+    function updateStatus(status) {
+        var row = jewelry.dtSingleSelected('dt');
+        if (!row) {
+            return
+        }
+        $.post('/admin/merchant/update', {uid: row.uid, status: status}, function (result) {
+            if (result.code !== 0) {
+                jewelry.notify(result.message, 'error')
+                return
+            }
+            jewelry.notify('保存成功', function () {
+                jewelry.reloadDatatable('dt')
+            })
+        })
+    }
+    function statusRender(data, type, row) {
+        var arr = ['待审核', '已通过', '审核失败'];
+        if (data < 0 || data > 2) {
+            return "未知"
+        }
+        return arr[data];
+    }
+</script>
+<%}%>

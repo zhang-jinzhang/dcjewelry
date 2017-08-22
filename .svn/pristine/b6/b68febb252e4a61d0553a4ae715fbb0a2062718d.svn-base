@@ -1,0 +1,148 @@
+package com.ceyi.project.dcjewelry.user;
+
+import com.ceyi.project.dcjewelry.article.ArticleCategoryService;
+import com.ceyi.project.dcjewelry.follow.UserFollowService;
+import com.ceyi.project.dcjewelry.merchant.Merchant;
+import com.ceyi.project.dcjewelry.merchant.MerchantService;
+import com.ceyi.project.dcjewelry.upload.UploadService;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+import pw.wecode.project.framework.utils.StringUtils;
+import pw.wecode.project.framework.web.Mvc;
+import pw.wecode.project.framework.web.Result;
+
+import javax.inject.Inject;
+
+/**
+ * Created by lingh on 2017/5/5.
+ */
+@Controller
+@RequestMapping("/wx/user/")
+public class UserController {
+    @Inject
+    private UserFollowService userFollowService;
+    @Inject
+    private UploadService uploadService;
+    @Inject
+    private UserService userService;
+    @Inject
+    private ArticleCategoryService articleCategoryService;
+    @Inject
+    private MerchantService merchantService;
+
+    @ResponseBody
+    @RequestMapping("follow")
+    public Result follow(@RequestParam("uid") int uid) {
+        User user = Mvc.context().sGet(User.SESSION_KEY);
+        if (userFollowService.follow(uid, user.getId())) {
+            user.setFollowCount(user.getFollowCount() + 1);
+        }
+        return new Result();
+    }
+
+    @ResponseBody
+    @RequestMapping("unfollow")
+    public Result unfollow(@RequestParam("uid") int uid) {
+        User user = Mvc.context().sGet(User.SESSION_KEY);
+        if (userFollowService.unfollow(uid, user.getId()) > 0) {
+            user.setFollowCount(user.getFollowCount() - 1);
+        }
+        return new Result();
+    }
+
+    @RequestMapping("auth")
+    public ModelAndView auth() {
+        ModelAndView mav = new ModelAndView("weixin/user/auth");
+        mav.addObject("topCategories", articleCategoryService.getTopCategory().values());
+        User user = Mvc.context().sGet(User.SESSION_KEY);
+        Merchant merchant = merchantService.get(user.getId());
+        user.setMerchant(merchant);
+        if (user.getMerchant() != null) {
+            mav.addObject("parts", StringUtils.split(user.getMerchant().getArea(), " "));
+        }
+        return mav;
+    }
+
+    @ResponseBody
+    @RequestMapping("auth-save")
+    public Result saveAuth(Merchant merchant, @RequestParam(value = "file", required = false) MultipartFile file, @RequestParam("phone") String phone) {
+        if (!StringUtils.hasText(merchant.getName())) {
+            return new Result(Result.CODE_ERROR, "请输入商家名称");
+        }
+        if (!StringUtils.hasText(merchant.getBoss())) {
+            return new Result(Result.CODE_ERROR, "请输入法人");
+        }
+        if (!StringUtils.hasText(merchant.getEmail())) {
+            return new Result(Result.CODE_ERROR, "请输入邮箱");
+        }
+        if (!StringUtils.hasText(phone)) {
+            return new Result(Result.CODE_ERROR, "请输入电话");
+        }
+        User user = Mvc.context().sGet(User.SESSION_KEY);
+        if (StringUtils.hasText(phone) && !phone.equals(user.getPhone())) {
+            User exists = userService.getUserByPhone(phone);
+            if (exists != null) {
+                return new Result(Result.CODE_ERROR, "手机号已经被其它用户使用");
+            } else {
+                user.setPhone(phone);
+                userService.updateInfo(user);
+            }
+        }
+        String pic = uploadService.upload(file);
+        if (!StringUtils.hasText(pic) && !file.isEmpty()) {
+            return new Result(Result.CODE_ERROR, "上传证件失败");
+        }
+        if (StringUtils.hasText(pic)) {
+            merchant.setBusinessPic(pic);
+        }
+        merchant.setUid(user.getId());
+        merchantService.save(merchant);
+        user.setMerchant(merchant);
+        return new Result();
+    }
+
+    @RequestMapping("edit")
+    public String edit() {
+        return "weixin/user/edit";
+    }
+
+    @ResponseBody
+    @RequestMapping("save")
+    public Result save(User userVo, @RequestParam(value = "file", required = false) MultipartFile file) {
+        User user = Mvc.context().sGet(User.SESSION_KEY);
+        if (StringUtils.hasText(userVo.getPhone()) && !user.getPhone().equals(userVo.getPhone())) {
+            User exists = userService.getUserByPhone(userVo.getPhone());
+            if (exists != null) {
+                return new Result(Result.CODE_ERROR, "手机号码已经被其他用户使用");
+            }
+            user.setPhone(userVo.getPhone());
+        }
+
+        if (StringUtils.hasText(userVo.getNickname())) {
+            user.setNickname(userVo.getNickname());
+        }
+
+        String pic = uploadService.upload(file);
+        if (!StringUtils.hasText(pic) && !file.isEmpty()) {
+            return new Result(Result.CODE_ERROR, "上传文件失败");
+        }
+        if (StringUtils.hasText(pic)) {
+            user.setHeadimg(pic);
+        }
+
+        if (StringUtils.hasText(userVo.getAddress())) {
+            user.setAddress(userVo.getAddress());
+        }
+
+        if (userVo.getSex() == 1 || userVo.getSex() == 2) {
+            user.setSex(userVo.getSex());
+        }
+
+        userService.updateInfo(user);
+        return new Result();
+    }
+}

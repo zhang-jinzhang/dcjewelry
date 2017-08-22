@@ -1,0 +1,64 @@
+<%
+layout("/weixin/layout.html",{
+title:'个人资料',
+css:['index.css'],
+js: ['jquery-2.0.3.min.js', 'admin/ajaxupload.js', 'user/edit.js'],
+mavNav : 2
+}){
+%>
+<form id="form-user" name="form-user" role="form" method="post" action="/wx/user/save" enctype="multipart/form-data">
+    <div class="user-wrap">
+        <div class="head">
+            <label for="headPic" class="head-pic">
+                <img id="headImg" src="${user.headimg}" alt="">
+                <input id="headPic" name="file" type="file">
+            </label>
+            <p class="change-picture-text">点击更改头像</p>
+            <div class="count-text clearfix">
+                <p class="fl">等级: LV${user.level}</p>
+                <p class="fr">积分:${user.point}币</p>
+            </div>
+        </div>
+        <div class="list content bg-white">
+            <div class="tit clearfix"><i class="datum-icon fl"></i>
+                <h3 class="fl">个人资料</h3></div>
+            <ul class="bg-white">
+                <li class="item clearfix">
+                    <strong class="fl">性别:</strong>
+                    <input type="hidden" id="sex" name="sex" value="${user.sex}">
+                    <div class="fr">
+                        <div class="fl redio1 <%if(user.sex==1){%>active<%}%>" data-sex="1">
+                            <i class="radio-icon1"></i>
+                            <span class="fl">男</span>
+                        </div>
+                        <div class="fl redio1 <%if(user.sex==2){%>active<%}%>" data-sex="2">
+                            <i class="radio-icon1"></i>
+                            <span class="fl">女</span>
+                        </div>
+                    </div>
+                </li>
+                <li class="item clearfix">
+                    <strong class="fl">昵称:</strong>
+                    <input class="text fl" type="text" placeholder="请输入昵称" name="nickname" value="${user.nickname!}">
+                </li>
+                <li class="item clearfix">
+                    <strong class="fl">微信号:</strong>
+                    <input class="text fl" type="text" placeholder="请输入微信号" name="wechatId" value="${user.wechatId!}">
+                </li>
+                <li class="item clearfix">
+                    <strong class="fl">电话:</strong>
+                    <input class="text fl" type="text" placeholder="请输入电话" name="phone" value="${user.phone!}">
+                </li>
+                <li class="item clearfix">
+                    <strong class="fl">地址:</strong>
+                    <input class="text fl" type="text" placeholder="请输入地址" name="address" value="${user.address!}">
+                </li>
+            </ul>
+        </div>
+        <button class="sub-btn" type="submit">保存</button>
+        <%if(isEmpty(user.merchant) || user.merchant.status != 1){%>
+        <p class="attestation-text"><a href="/wx/user/auth.html">如您为同行，赶快申请同行认证吧!</a></p>
+        <%}%>
+    </div>
+</form>
+<%}%>

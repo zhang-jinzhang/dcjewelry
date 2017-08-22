@@ -1,0 +1,42 @@
+<%for(article in articles){%>
+<div class="card-item bg-white">
+    <div class="md-head clearfix">
+        <div class="date fl"><span>${article.createTime, "dd"}</span>&nbsp;${article.createTime, "MM"}月</div>
+        <h2 class="tit fl">${article.title!}</h2>
+        <div class="fr info-my">
+            <p class="zx-classify-text">分类：<span>${categoryMap[article.pid].name!}</span><span>${categoryMap[article.cid].name!}</span></p>
+        </div>
+    </div>
+    <div class="md-pic-list">
+        <a class="clearfix" href="/wx/article/${article.id}.html">
+          <% if(article.type==1){%>
+          <%for(pic in article.pictures){%>
+          <img class="img fl" src="${pic.url!}" alt="">
+          <%}}else if(article.type==2){%>
+          <video class="pic-big" preload="auto" controls="controls" muted="false" poster="${resHost}${article.videoImg!}" src="${resHost}${article.videoUrl!}"></video>
+          <%}%>
+        </a>
+    </div>
+    <div class="recomment feed-handle md-handle1 clearfix">
+        <!-- <div class="date-text fl">${article.createTime, textTime}</div>
+        <div class="zx-heat fl ml">
+            <i class="icon browse-icon"></i>
+            <span>${article.viewCount}</span>
+        </div>
+        <div class="zx-collect fl ml">
+            <i class="icon collect-icon <%if(article.favorited){%>active<%}%>" data-uid="${article.uid}" data-id="${article.id}"></i>
+            <span class="favorite-count">${article.favoriteCount}</span>
+        </div> -->
+        <i class="peop">${article.viewCount}</i>
+        <i class="award">${article.likeCount}</i>
+        <i class="speak">${article.commentCount}</i>
+        <a href="javascript:;" class="del-btn fr" data-id="${article.id}">删除</a>
+    </div>
+</div>
+<%if(articleLP.index==2 && !isEmpty(adArticle)){%>
+<%include("/weixin/article/tpl_article_item.html", {article:adArticle}){}%>
+<%}%>
+<%}%>
+<%if(articles.~size < 2 && !isEmpty(adArticle)){%>
+<%include("/weixin/article/tpl_article_item.html", {article:adArticle}){}%>
+<%}%>

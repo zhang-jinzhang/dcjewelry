@@ -1,0 +1,57 @@
+<%
+layout("/weixin/layout.html",{
+title:'珠宝仓',
+css:['index.css'],
+js: ['zixun/index.js'],
+mavNav : 2
+}){
+%>
+<script>
+    var cid = parseInt('${searchRequest.cid}')
+</script>
+<%if(articlePage.data.~size > 0){%>
+<script>
+    var oldest = {
+        id: '${articlePage.data[articlePage.data.~size-1].id}',
+        updateTime: '${articlePage.data[articlePage.data.~size-1].createTime, "yyyy-MM-dd HH:mm:ss"}'
+    };
+    var newest = {
+        id: '${articlePage.data[0].id}',
+        updateTime: '${articlePage.data[0].createTime, "yyyy-MM-dd HH:mm:ss"}'
+    };
+</script>
+<%}else{%>
+<script>
+    var oldest = {id: 0, updateTime: ''};
+    var newest = {id: 0, updateTime: ''};
+</script>
+<%}%>
+<div class="zx-fix-box"></div>
+<div class="zx-fix-top bg-white zx-top-bg">
+    <div class="hd-user-icon" id="userBtn"></div>
+    <div class="zx-nav">
+        <ul class="clearfix" id="zxNav">
+            <li class="fl <%if(searchRequest.cid == 0){%>active<%}%>"><a href="/wx/article/pic_whole.html">推荐</a></li>
+            <%for(topCategory in topCategories){%>
+            <%if(topCategory.subscribed){%>
+            <li class="fl <%if(searchRequest.cid == topCategory.id){%>active<%}%>"><a href="/wx/article/pic_whole.html?cid=${topCategory.id}">${topCategory.name}</a></li>
+            <%}%>
+            <%}%>
+        </ul>
+    </div>
+    <div class="hd-add-icon-img" style=""></div>
+</div>
+<div class="bg-white zx-search">
+    <div class="i-search bg-white">
+        <input class="search" type="text" placeholder="请输入您想查询的关键字" value="${searchRequest.keyword!}">
+        <a class="search" href=""></a>
+    </div>
+</div>
+<div class="zx-new-con hide" id="newHint">又发现了5条新内容</div>
+
+<div class="card-list zixun-card-list">
+   <%include("/weixin/article/tpl_articleImg_list.html"){}%>
+</div>
+<%include("/weixin/tpl_user.html"){}%>
+<%}%>
+<div class="update" onclick="window.location.reload()">点击刷新</div> 

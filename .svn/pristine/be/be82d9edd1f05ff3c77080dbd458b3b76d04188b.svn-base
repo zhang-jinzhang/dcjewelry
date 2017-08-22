@@ -1,0 +1,28 @@
+<%for(request in requests){%>
+<div class="card-item card-item1 bg-white">
+    <div class="head">
+        <a class="head-pic" href="">
+            <img src="${request.user.headimg!}" alt="">
+        </a>
+        <div class="box clearfix">
+            <div class="fl">
+                <a href="" class="name">${request.user.nickname!}</a>
+                <span class="timer">${request.createTime, "yyyy-MM-dd HH:mm:ss"}</span>
+            </div>
+            <%if(request.user.id != user.id){%>
+            <div class="fr">
+                <div class="card-hd-btn clearfix">
+                    <a href="" class="fr br-blue-btn btn-ml message-btn" data-nickname="${request.user.nickname!}" data-uid="${request.user.id}">私信</a>
+                    <%if(!request.user.followed){%>
+                    <a href="" class="fr bg-red-btn follow-btn" data-uid="${request.user.id}">+&nbsp;关注</a>
+                    <%}%>
+                </div>
+            </div>
+            <%}%>
+        </div>
+    </div>
+    <div class="card-item1-text">
+        <p>${request.content!}</p>
+    </div>
+</div>
+<%}%>

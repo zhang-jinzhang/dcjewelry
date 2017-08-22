@@ -1,0 +1,131 @@
+<%
+layout("/weixin/layout.html",{
+title:'发布资讯',
+css:['index.css', 'uploadImg.css'],
+js: ['jquery-2.0.3.min.js', 'FileAPI.min.js', 'uploadVideo.js', 'article/create.js'],
+mavNav : 3
+}){
+%>
+<div class="release-wrap">
+    <ul class="form bg-white" >
+        <li class="sel-text clearfix">
+            <div class="sel-item fl distict">
+                <span class="fl">发布类别</span>
+                <select class="fl" name="functionType" id="releaseCategorySel" data-id="${article.functionType!0}" onchange="funcType(this.options[this.options.selectedIndex].value)">
+                    <option value="99" selected >请选择</option>
+                    <option value="0">资讯</option>
+                    <option value="1">图库</option>
+                </select>
+            </div>
+            <div class="sel-item fl pingdao">
+                <span class="fl">发布频道</span>
+                <select class="fl" name="pid" id="topCategorySel" data-id="${article.pid!0}" >
+                    <option value="0">请选择</option>
+                    <%for (topCategory in topCategories) { %>
+                    <option value="${topCategory.id}">${topCategory.name}</option>
+                    <%}%>
+                </select>
+            </div>
+            <div class="sel-item fl pingdaoclass">
+                <span class="fl">频道分类</span>
+                <select class="fl" name="cid" id="categorySel" data-id="${article.cid!0}">
+                    <option value="0">请选择</option>
+                    <%for (topCategory in topCategories) { %>
+                    <%for (category in topCategory.articleCategoryList) { %>
+                    <option value="${category.id}" data-pid="${category.pid}" style="display: none">${category.name}
+                    </option>
+                    <%}%>
+                    <%}%>
+                </select>
+            </div>
+        </li>
+        <li class="text clearfix">
+            <span class="fl">资讯标题</span>
+            <input class="fl" type="text" name="title" id="title" value="${article.title!}">
+        </li>
+        <li class="texteare clearfix">
+            <span class="fl">资讯正文</span>
+            <textarea name="content" id="content" cols="30" rows="10" placeholder="请输入文字，或者需要转载的URL链接； 如为转载则发布后标示转载出处。">${article.content!}</textarea>
+        </li>
+    </ul>
+    <ul class="form bg-white">
+        <li class="up-img clearfix">
+            <p class="imgWarn" style="display:none">上传图片建议采用690*690px像素</p>
+            <p class="videoWarn" style="display:none">上传视频只能10秒或小于10m</p>
+            <span class="fl">资讯素材</span>
+            <div class="fl up-img-fr">
+                <div class="up-wrap clearfix" id="upload">
+                    <label class="up-add up-plus" onclick="chooseLoad();"><img src="" alt=""><span class="up-del"></span></label>
+                </div>
+            </div>
+            <div class="mask" style="display:none">
+                <div class="fileType">
+                    <div class="title">
+                        <h3>选择发布类型</h3>
+                        <i class="fileType-close" onclick="javaScript:$('.mask').hide()"></i>
+                    </div>
+                    <div class="fileType-box clearfix">
+                        <div class="fileImg">
+                            <img src="../../img/zx_img.jpg">
+                            <p>发图片</p>
+                        </div>
+                        <div  class="fileVideo">
+                            <img src="../../img/zx_video.jpg">
+                            <p>发视频</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li class="radio-text clearfix" style="display:none">
+            <span class="fl">选择水印</span>
+            <div class="radio-text-r fl" id="radio">
+                <%
+                   var wmId = 0;
+                   if(!isEmpty(article)) {
+                       wmId = article.wmId;
+                   } else if (watermarks.~size > 0) {
+                       wmId = watermarks[0].id;
+                   }
+                %>
+                <input type="hidden" id="wmId" name="wmId" value="${wmId}">
+                <%for(wm in watermarks){%>
+                <label class="fl <%if(wm.id==wmId!){%>active<%}%>" data-wm="${wm.id!}">
+                    <i class="fl radio-icon1"></i>
+                    <p class="fl">水印${wmLP.index}</p>
+                </label>
+                <%}%>
+            </div>
+        </li>
+        <li class="watermark-text clearfix" style="display:none">
+            <span class="fl">选择图片<br>水印位置</span>
+            <div class="fl watermark-pst" id="watermarkPst">
+                <div>
+                    <a class="active" href="javascript:;" data-pos="0">左上</a>
+                    <a href="javascript:;" data-pos="3">中上</a>
+                    <a href="javascript:;" data-pos="6">右上</a>
+                </div>
+                <div>
+                    <a href="javascript:;" data-pos="1">左中</a>
+                    <a href="javascript:;" data-pos="4">居中</a>
+                    <a href="javascript:;" data-pos="7">居右</a>
+                </div>
+                <div>
+                    <a href="javascript:;" data-pos="2">左下</a>
+                    <a href="javascript:;" data-pos="5">中下</a>
+                    <a href="javascript:;" data-pos="8">右下</a>
+                </div>
+            </div>
+        </li>
+        <li class="download-img clearfix" >
+            <span class="fl">下载素材积分</span>
+            <div class="fl download-img-text">
+                <input class="fl" type="text" name="point" id="point" value="${article.point!0}">
+                <p class="fl">（每次/分）</p>
+            </div>
+        </li>
+    </ul>
+</div>
+<input type="hidden" id="id" value="${article.id!0}">
+<a href="" class="btn-create release-sub">发布</a>
+<%}%>

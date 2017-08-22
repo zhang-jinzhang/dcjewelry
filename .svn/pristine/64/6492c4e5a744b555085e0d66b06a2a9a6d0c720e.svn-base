@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>${title!'珠宝仓'}</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="${resHost}/js/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="${resHost}/js/datatables/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="${resHost}/js/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="${resHost}/js/adminlte/css/style.css">
+    <link rel="stylesheet" href="${resHost}/js/adminlte/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="${resHost}/js/adminlte/css/_all-skins.min.css">
+    <link rel="stylesheet" href="${resHost}/js/notifIt/css/notifIt.min.css">
+    <link rel="stylesheet" href="${resHost}/js/ionicons/css/ionicons.min.css">
+    <link rel="stylesheet" href="${resHost}/css/admin.css?v=${v}">
+    <%if (has(css)) {
+    for (c in css) {
+    %>
+    <link rel="stylesheet" href="${resHost}/css/${c}?v=${v!}">
+    <%
+    }
+    }%>
+
+    <!--[if lt IE 9]>
+    <script src="${resHost}/js/html5shiv/html5shiv.min.js"></script>
+    <script src="${resHost}/js/respond/respond.min.js"></script>
+    <![endif]-->
+    <script src="${resHost}/js/jquery/jquery.min.js"></script>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+    <header class="main-header">
+        <a href="index2.html" class="logo">
+            <span class="logo-mini"><img src="${resHost}/img/logo70.png"></span>
+            <span class="logo-lg"><img src="${resHost}/img/logo70.png"></span>
+        </a>
+        <nav class="navbar navbar-static-top">
+            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/admin/logout.html"><span>退出</span></a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <aside class="main-sidebar">
+        <section class="sidebar">
+            <ul class="sidebar-menu">
+                <li class="treeview">
+                    <a href="/admin/index.html">
+                        <span>总览</span>
+                    </a>
+                </li>
+                <li class="treeview">
+                    <a href="/admin/article/index.html">
+                        <span>资讯管理</span>
+                    </a>
+                </li>
+                <li class="treeview">
+                    <a href="/admin/article/pic.html">
+                        <span>图库中心</span>
+                    </a>
+                </li>
+                <li class="treeview">
+                    <a href="/admin/user/index.html">
+                        <span>会员管理</span>
+                    </a>
+                </li>
+                <li class="treeview">
+                    <a href="/admin/merchant/index.html">
+                        <span>同行认证</span>
+                    </a>
+                </li>
+                <li class="treeview">
+                    <a href="/admin/level/index.html">
+                        <span>等级设置</span>
+                    </a>
+                </li>
+                <li class="treeview">
+                    <a href="/admin/point/config.html">
+                        <span>积分设置</span>
+                    </a>
+                </li>
+                <li class="treeview">
+                    <a href="/admin/banner/index.html">
+                        <span>Banner管理</span>
+                    </a>
+                </li>
+                <li class="treeview">
+                    <a href="/admin/wm/index.html">
+                        <span>水印设置</span>
+                    </a>
+                </li>
+                <li class="treeview">
+                    <a href="/admin/search/hot.html">
+                        <span>热搜配置</span>
+                    </a>
+                </li>
+                <li class="treeview">
+                    <a href="/admin/notice/index.html">
+                        <span>通知管理</span>
+                    </a>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <span>系统设置</span>
+                    </a>
+                </li>
+            </ul>
+        </section>
+    </aside>
+
+    <div class="content-wrapper">
+        <section class="content">
+            ${layoutContent}
+        </section>
+    </div>
+    <footer class="main-footer">
+        <div class="pull-right hidden-xs">
+            备案号：闽IC-XXXXXX1
+        </div>
+        <strong><a href="http://almsaeedstudio.com">厦门大巢珠宝有限公司</a></strong>
+    </footer>
+    <div class="control-sidebar-bg"></div>
+</div>
+<script>
+    var siteConf = {resHost : '${resHost!}', host : '${host!}'};
+    var categoryMap = JSON.parse('${categoryMapJson}');
+</script>
+<script src="${resHost}/js/bootstrap/js/bootstrap.min.js"></script>
+<script src="${resHost}/js/datatables/js/jquery.dataTables.min.js"></script>
+<script src="${resHost}/js/datatables/js/dataTables.bootstrap.min.js"></script>
+<script src="${resHost}/js/adminlte/js/app.min.js"></script>
+<script src="${resHost}/js/notifIt/js/notifIt.min.js"></script>
+<script src="${resHost}/js/admin/ajaxupload.js?v=${v}"></script>
+<script src="${resHost}/js/jewelry.js?v=${v}"></script>
+<script src="${resHost}/js/admin.js?v=${v}"></script>
+<%
+if (has(js)) {
+for (j in js) {
+if (!strutil.contain(j, "http")) {
+j = resHost + "/js/" + j + "?v=" + v;
+}
+%>
+<script src="${j}"></script>
+<%
+}
+}%>
+</body>
+</html>

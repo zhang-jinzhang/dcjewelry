@@ -1,0 +1,44 @@
+<%for(favorite in favorites){%>
+<div class="card-item bg-white">
+    <div class="head">
+        <a class="head-pic" href="">
+            <img src="${favorite.user.headimg!}"  alt="">
+        </a>
+
+        <div class="box clearfix">
+            <div class="fl">
+                <a href="" class="name">${favorite.user.nickname}</a>
+                <span class="timer">${favorite.createTime, textTime}</span>
+            </div>
+            <div class="fr">
+                <p class="zx-classify-text">分类：<span>${categoryMap[favorite.article.pid].name!}</span><span>${categoryMap[favorite.article.cid].name!}</span>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="pic-text-item">
+        <a href="/wx/article/${favorite.article.id}.html" class="clearfix">
+            <div class="con">
+                <h3>${favorite.article.title!}</h3>
+            </div>
+            <div class="pic-list-box">
+                <img src="${favorite.article.firstPic!}" alt="" class="pic">
+            </div>
+        </a>
+    </div>
+    <div class="feed-handle feed-handle1 clearfix">
+        <div class="zx-heat fl">
+            <i class="icon zx-heat-icon"></i>
+            <span>${favorite.article.viewCount}</span>
+        </div>
+        <div class="zx-collect text-center">
+            <i class="icon collect-icon active"></i>
+            <span>${favorite.article.favoriteCount}</span>
+        </div>
+        <div class="zx-zan">
+            <i class="icon zx-zan-icon"></i>
+            <span>${favorite.article.likeCount}</span>
+        </div>
+    </div>
+</div>
+<%}%>

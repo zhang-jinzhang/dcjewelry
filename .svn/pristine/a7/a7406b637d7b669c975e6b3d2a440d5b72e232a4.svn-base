@@ -1,0 +1,62 @@
+<%
+layout("/weixin/layout.html",{
+title:'个人资料',
+css:['index.css'],
+js: ['jquery-2.0.3.min.js', 'admin/ajaxupload.js', 'user/edit.js'],
+mavNav : 0
+}){
+%>
+<style type="text/css">
+	.about{
+		font-family: "微软雅黑";
+		padding:0.57rem 0.57rem 0 0.57rem;
+	}
+	.about h1{
+		font-size:0.5rem;
+		font-family: "微软雅黑";
+		line-height:0.57rem;
+		margin:0.57rem 0;
+	}
+	.about img{
+		width:100%;
+		height:100%;
+	}
+	.instrution{
+		font-family: "微软雅黑";
+		padding:0 0.57rem 0;
+	}
+	.instrution h2{
+		font-size:0.5rem;
+		font-family: "微软雅黑";
+		line-height:0.57rem;
+		margin:0.57rem 0;
+	}
+	.instrution p{
+		font-size:0.4rem;
+		line-height:0.5rem;
+		font-family: "微软雅黑";
+	}
+	.detail p{
+		margin:0.4rem 0;
+		line-height: 0.4rem;
+		font-family: "微软雅黑";
+	}
+</style>
+<div class="about">
+	<h1>厦门大巢珠宝有限公司</h1>
+	<img src="/img/corp.png" alt="" />
+</div>
+<div class="instrution">
+	<h2>公司简介</h2>
+	<p>公司介绍 关于我们的介绍公司介绍 关于我们的介绍公司介绍 关于我们的介绍公司介绍 关于我们的介绍公司介绍 关于</p>
+	<div class="detail">
+		<p>联系方式：0592-88888888 </p>
+		<p>邮件：ankj6899@139.com </p>
+		<p>传真：0592-88888888 </p>
+		<p>公司官网：ww</p>
+		<p>地址：</p>
+	</div>
+
+
+</div>
+<%}%>

@@ -1,0 +1,1 @@
+.head{position:relative;height:80px;background:#fff}.head-logo{position:absolute;left:20px;top:0;bottom:0;height:60px;margin:auto}.head-logo img{display:block;height:100%}.margin-r{margin-right:10px}

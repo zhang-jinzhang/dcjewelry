@@ -1,0 +1,57 @@
+<%
+layout("/admin/layout.html",{
+js:['admin/article.js']
+}){
+%>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">通知列表</h3>
+                <a href="/admin/notice/create.html" class="btn btn-info">添加通知</a>
+                <button id="del-btn-checkbox" class="btn btn-danger">删除</button>
+            </div>
+            <div class="box-body">
+                <table id="dt" data-options="'url':'/admin/notice/query', 'serverSide':true"
+                       class="dataTables table table-striped table-bordered"
+                       cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th data-options="'data': 'id', 'render':'checkbox'">
+                            <input id='checkall' type='checkbox' value='' onclick='javascript:checkall();'>
+                        </th>
+                        <th data-options="'data':'content'">标题</th>
+                        <th data-options="'data':'createTime'">创建时间</th>
+                        <!--<th data-options="'data':'updateTime'">更新时间</th>-->
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function checkbox(data, type, row) {
+        return '<input type="checkbox" name="box" id="box" value="'+data+'" onclick="javascript:checkonebox();">';
+    }
+    $('#del-btn-checkbox').click(function () {
+            var userIds=getIds();
+            if(userIds == "" || userIds==undefined){
+                alert("请选择资讯");
+                return
+            }
+            $.post('/admin/notice/checkboxDelete', {ids: userIds}, function (result) {
+                if (result.code !== 0) {
+                    jewelry.notify(result.message, 'error');
+                    return
+                }
+                jewelry.notify('删除成功', function () {
+                    jewelry.reloadDatatable('dt')
+                })
+            })
+    })
+        $('#del-btn').click(function () {
+        jewelry.deleteSelected('dt', '/admin/notice/delete');
+    })
+</script>
+<%}%>

@@ -1,0 +1,142 @@
+<%
+layout("/weixin/layout.html",{
+title:'资讯详情',
+css:['index.css'],
+js: ['swiper-3.4.1.min.js', 'zixun/info.js','FileAPI.min.js'],
+mavNav : 1
+}){
+%>
+<div class="if-hd bg-white">
+    <h2>${article.title!}</h2>
+
+    <div class="ft-text clearfix">
+    	<a href="###" class="head-pic fl">
+            <img src="${article.user.headimg!}" alt="">
+        </a>
+        <div class="fl text">
+        	<p class="name">${article.user.nickname!}</p>
+        	<p class="time">${article.createTime!, "yyyy-MM-dd HH:mm"}</p>
+        </div>
+        <div class="kangkang fr">
+            <%if(user.id != article.user.id){%>
+            <a href="" class="fr br-blue-btn btn-ml btn-message" data-uid="${article.user.id}"
+               data-nickname="${article.user.nickname}">私信</a>
+            <a href="" class="fr bg-red-btn btn-ml btn-follow" data-uid="${article.user.id}"
+               data-follow="${article.user.followed!}"><%if(!article.user.followed){%>+&nbsp;关注<%}else{%>已关注<%}%></a>
+            <%}%>
+            <a href="" class="fr bg-green-btn btn-favorite" data-favorite="${favorited}" data-id="${article.id}"><%if(favorited){%>已收藏<%}else{%>+&nbsp;收藏<%}%></a>
+        </div>
+    </div>
+</div>
+<div class="if-cotent bg-white">
+    <div class="if-main">
+        <div class="if-content article" data-id="${article.id}">${article.content!}</div>
+        <%if(article.type==2 && !isEmpty(article.videoUrl)){%>
+        <video class="pic-big articleVd" src="${resHost}${article.videoUrl!}" poster="${resHost}${article.videoImg!}" preload="metadata"></video>
+        <div class="video-zhezhao"></div>
+        <%}%>
+        <%if(article.type==1 && !isEmpty(pics) && pics.~size>0){%>
+        <ul class="pic-list clearfix" id="picList">
+            <%for(pic in pics){%>
+            <li class="fl"><img class="article" src="${resHost}${pic.url!}" alt=""></li>
+            <%}%>
+        </ul>
+        <%}%>
+    </div>
+    <ul class="if-feed-handle clearfix">
+        <li class="fl">
+            <p class="renqi"><i class="icon renqi-icon"></i>人气：${article.viewCount}</p>
+        </li>
+        <li class="fl">
+            <p><i class="icon collect-icon <%if(favorited){%>active<%}%>" data-id="${article.id}"></i>收藏：<span
+                    class="favorite-count">${article.favoriteCount}</span></p>
+        </li>
+        <li class="fl">
+            <p><i class="icon zx-zan-icon <%if(liked){%>active<%}%>" data-id="${article.id}"></i>点赞：<span
+                    class="like-count">${article.likeCount}</span></p>
+        </li>
+        <li class="fl">
+            <p class="fl"><i class="icon share-icon" data-id="${article.id}"></i>分享</p>
+        </li>
+    </ul>
+    <%if(likes.~size > 0){%>
+    <ul class="head-pic-list clearfix">
+        <%for(like in likes){%>
+        <li class="fl"><img src="${like.user.headimg!}" alt=""></li>
+        <%}%>
+    </ul>
+    <%}%>
+</div>
+<div class="geban"></div>
+<div class="download-pic-shade hide" id="downloadPic">
+    <div class="download-pic-wrapper" id="swiper">
+        <ul class="swiper-wrapper" id="swiperWrapper">
+
+        </ul>
+    </div>
+    <img class="preview hide" src="" alt="">
+
+    <div class="download-pic-ft">
+        <a class="fl" id="clonePic" href="javascript:;">关闭</a>
+        <a class="fr download" href="javascript:;" data-id="0">查看原图（${article.point}积分）</a>
+    </div>
+</div>
+<div class="download-video-shade hide" id="downloadVideo">
+    <video  id="show-video" controls="controls" preload="metadata">
+    </video>
+    <div class="download-video-ft">
+        <a class="fl cloneVideo" href="javascript:;">关闭</a>
+        <a class="fr downloadVideo" href="javascript:;" data-id="0">查看视频（${article.point}积分）</a>
+    </div>
+    <div class="mengban"></div>
+</div>
+<div class="comment-info">
+	<h3>全部评论 <span>（${CommentCount}）</span></h3>
+
+	<ul>
+        <%for(list in Lists){%>
+		<li>
+			<div class="user-photo fl">
+				<img src="${list.user.headimg }" alt="" />
+			</div>
+			<div class="name fl">${list.user.nickname}</div>
+			<div class="time fr">${list.createTime!, "yyyy-MM-dd HH:mm"}</div>
+			<div class="say-content">
+				${list.content}
+			</div>
+		</li>
+        <%}%>
+	</ul>
+</div>
+<div class="comment">
+	<input  placeholder="写评论" class="fl" id="comment-value" type="text"/>
+	<button class="fl commitComment" id="${article.id}">评论</button>
+	<button class="fl" onClick="javascript :history.back(-1);">返回</button>
+</div>
+<script>
+    $(document).ready(function () {
+        jewelry.wxshare('${article.id!}', '${article.title!}', '/wx/article/${article.id}.html', '${article.firstPic!}')
+        $("#show-video").click(function(){
+        	if($(".mengban").is(":visible")){
+        		return false;
+        	}
+        })
+        $(".if-main video").click(function(){
+        	if($(".video-zhezhao").is(":visible")){
+        		return false;
+        	}
+        })
+		$(".bottom-box").hide();
+		$("#comment-value").focus(function(){
+			$(this).css("background","#F4F5F7").attr("placeholder","")
+		})
+		$("#comment-value").blur(function(){
+			if($("#comment-value").val()==""){
+				$(this).css({"background":"#F4F5F7 url(../img/writeBg.png) 0.4rem center no-repeat","background-size":"0.35rem 0.35rem"}).attr("placeholder","写评论")
+			}
+			
+		})
+    })
+</script>
+<%}%>
+"${list.createTime}"

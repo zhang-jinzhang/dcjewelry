@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>珠宝仓资讯管理系统</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="${resHost}/js/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="${resHost}/js/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="${resHost}/js/adminlte/css/style.css">
+    <link rel="stylesheet" href="${resHost}/js/adminlte/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="${resHost}/js/adminlte/css/_all-skins.min.css">
+    <link rel="stylesheet" href="${resHost}/js/notifIt/css/notifIt.min.css">
+
+    <!--[if lt IE 9]>
+    <script src="${resHost}/js/html5shiv/html5shiv.min.js"></script>
+    <script src="${resHost}/js/respond/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body class="hold-transition skin-blue sidebar-mini bg-gray">
+<div class="head clearfix">
+    <div class="head-logo">
+        <img src="${resHost}/images/logo.png">
+    </div>
+    <h1 class="text-center">资讯管理系统</h1>
+</div>
+<div class="login-box">
+    <div class="login-box-body">
+        <p class="login-box-msg"></p>
+        <form action="" method="post">
+            <div class="form-group has-feedback">
+                <input id="username" type="text" class="form-control" placeholder="请输入账号" autofocus>
+                <span class="glyphicon fa fa-user form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input id="password" type="password" class="form-control" placeholder="请输入密码">
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+        </form>
+        <div class="social-auth-links text-center">
+            <button type="button" id="login-btn" class="btn btn-block btn-info btn-flat">登录</button>
+        </div>
+    </div>
+</div>
+<script src="${resHost}/js/jquery/jquery.min.js"></script>
+<script src="${resHost}/js/bootstrap/js/bootstrap.min.js"></script>
+<script src="${resHost}/js/adminlte/js/app.min.js"></script>
+<script src="${resHost}/js/notifIt/js/notifIt.min.js"></script>
+<script src="${resHost}/js/jewelry.js?v=${v}"></script>
+<script src="${resHost}/js/admin.js?v=${v}"></script>
+<script src="${resHost}/js/admin/login.js?v=${v}"></script>
+</body>
+</html>

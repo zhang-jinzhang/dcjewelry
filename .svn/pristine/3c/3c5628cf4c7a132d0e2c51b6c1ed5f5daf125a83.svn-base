@@ -1,0 +1,469 @@
+/**
+ * Created by lingh on 2016/4/23.
+ */
+var jewelry = (function (dc) {
+    var jsError = false;
+
+    function log(level, msg) {
+        msg = new Date() + " " + msg;
+        $.post('/log', {level: level, log: msg})
+    }
+
+    dc.debug = function (msg) {
+        log('debug', msg)
+    }
+
+    dc.info = function (msg) {
+        log('info', msg)
+    }
+
+    dc.warn = function (msg) {
+        log('warn', msg)
+    }
+
+    dc.error = function (msg) {
+        log('error', msg)
+    }
+
+    dc.onJsError = function (msg, url, line) {
+        jsError = "line:{" + line + "}, url:{" + url + "}, msg:{" + msg + "}"
+    }
+    dc.getJsError = function () {
+        return jsError
+    }
+
+    // 依赖于notifIt.js
+    /**
+     * 确认对话框
+     * @param msg  ：提示信息
+     * @param callback ：对话框关闭之后的回调函数
+     *
+     * 例子：
+     *   jewelry.confirm("取消广告？", function (ok) { if (ok) {});
+     *
+     */
+    dc.confirm = function (msg, callback) {
+        notif_confirm({
+            message: msg,
+            cancel: true,
+            callback: callback,
+            textaccept: "确定",
+            textcancel: "取消",
+            fullscreen: true
+        });
+    };
+
+    /**
+     * 提示对话框
+     * @param msg ： 提示信息
+     * @param type ：success,info,warning,error 四种类型
+     * @param callback ： 提示对话框关闭之后的回调函数
+     *
+     * 例子：
+     *   jewelry.notify("发货成功", "success", function(){window.location.href="/order/index.html";});
+     */
+    dc.notify = function (msg, type, callback) {
+        if (!type) {
+            type = "success";
+        } else if (type && (typeof type === 'function')) {
+            callback = type;
+            type = "success";
+        }
+        notif({msg: msg, type: type, position: "center", timeout: 2000, callback: callback});
+    };
+
+    /**
+     * 页面调转
+     * @param url ： 目标链接
+     */
+    dc.redirect = function (url) {
+        window.location.href = url;
+    };
+
+    /**
+     * 字符串替换
+     * @param target  ： 待替换的字符串
+     * @param search ： 要替换的字串
+     * @param replacement ： 替换的目标字串
+     * @returns string ： 替换后字符串
+     */
+    dc.replaceAll = function (target, search, replacement) {
+        return target.replace(new RegExp(search, 'g'), replacement);
+    };
+
+    /**
+     * 字符串转成javascript函数
+     * @param functionName ： 函数名称
+     * @returns ： function
+     */
+    dc.strToFunc = function (functionName) {
+        var namespaces = functionName.split(".");
+        var func = namespaces.pop();
+        var context = window;
+        for (var i = 0; i < namespaces.length; i++) {
+            context = context[namespaces[i]];
+        }
+        return context[func];
+    };
+
+    /**
+     * 重新加载datatable数据
+     * @param id : datatable的id
+     * @param data ：搜索条件
+     * 例子：
+     *   jewelry.reloadDatatable("dt", {name:"123", age:21});
+     */
+    dc.reloadDatatable = function (id, data) {
+        dataTableParams[id] = dataTableParams[id] || {};
+        if (data) {
+            for (p in data) {
+                dataTableParams[id][p] = data[p];
+            }
+        }
+        dataTables[id]['selected'] = [];
+        dataTables[id].ajax.reload();
+    };
+
+    /**
+     * 获取datatable选中单行
+     * @param id ： datatable的id
+     * @returns row： 选中的行
+     */
+    dc.dtSingleSelected = function (id) {
+        if (dataTables[id]['selected'].length === 0) {
+            jewelry.notify("请选择记录", "warning");
+            return false;
+        }
+        if (dataTables[id]['selected'].length > 1) {
+            jewelry.notify("请不要选择多条记录", "warning");
+            jewelry.dtClearSelected(id);
+            return false;
+        }
+
+        return dataTables[id]['selected'][0];
+    };
+
+    /**
+     * 获取datatable选中的行
+     * @param id
+     * @returns {*}
+     */
+    dc.dtSelected = function (id) {
+        return dataTables[id]['selected'];
+    };
+
+    /**
+     * 获取datatable选中的id
+     * @param id
+     * @returns ： id数组
+     */
+    dc.dtSelectedIds = function (id) {
+        var ids = [];
+        var selected = dataTables[id]['selected'];
+        for (var i = 0; i < selected.length; i++) {
+            ids.push(selected[i].id);
+        }
+        return ids;
+    };
+
+    /**
+     * 获取datatable
+     * @param id ： datatable的id
+     * @returns ：datatable对象
+     */
+    dc.dataTable = function (id) {
+        return dataTables[id];
+    };
+
+    /**
+     * 删除选中的行
+     * @param id : datatable的id
+     * @param url ： 请求的服务端地址
+     */
+    dc.deleteSelected = function (id, url) {
+        if (dataTables[id]['selected'].length === 0) {
+            jewelry.notify("请选择要删除的记录", "warning");
+            return;
+        }
+        jewelry.confirm("确认删除", function (ok) {
+            if (ok) {
+                var ids = [];
+                for (var i = 0; i < dataTables[id]['selected'].length; i++) {
+                    ids.push(dataTables[id]['selected'][i]['id']);
+                }
+                $.post(url, {ids: ids}, function (result) {
+                    if (result.code == 0) {
+                        jewelry.notify("删除成功");
+                        jewelry.reloadDatatable(id);
+                    }
+                });
+            }
+        });
+    };
+
+    /**
+     * 获取datatable列名
+     * @param id ： datatable的id
+     * @returns ： 列名数组
+     */
+    dc.dtColumns = function (id) {
+        var columns = [];
+        for (var i = 0; i < dataTables[id].Columns.length; i++) {
+            columns.push(dataTables[id].Columns[i].ColumnName);
+        }
+        return columns;
+    };
+
+    /**
+     * 清空选中，即不选中任何行
+     * @param id : datatable的id
+     */
+    dc.dtClearSelected = function (id) {
+        dataTables[id]['selected'] = [];
+        $('#' + id + ' tbody tr').each(function () {
+            $(this).removeClass('selected');
+        });
+    };
+
+    dc.imgRender = function (data, type, row) {
+        if (data.indexOf(siteConf.resHost) == -1 && data.indexOf('http') == -1) {
+            data = siteConf.resHost + data;
+        }
+        return '<img style="width:100px" src="' + data + '">';
+    };
+
+    dc.urlRender = function (data, type, row) {
+        if (data.indexOf(siteConf.host) == -1 && data.indexOf('http') == -1) {
+            data = siteConf.host + data;
+        }
+        return '<a href="' + data + '">' + data + '</a>';
+    };
+
+    dc.comment = function (id, content, callback) {
+        $.post('/wx/article/comment', {id: id, content: content}, function (result) {
+            if (result.code === 0) {
+                alert('评论成功')
+                if (typeof callback === 'function') {
+                    callback()
+                }
+            } else {
+                alert(result.message)
+            }
+        }, 'json')
+    }
+
+    dc.like = function (id, callback) {
+        $.post('/wx/article/like', {id: id}, function (result) {
+            if (result.code === 0) {
+                alert('点赞成功')
+                if (typeof callback === 'function') {
+                    callback()
+                }
+            } else {
+                alert(result.message)
+            }
+        }, 'json')
+    }
+
+    dc.unlike = function (id, callback) {
+        $.post('/wx/article/unlike', {id: id}, function (result) {
+            if (result.code === 0) {
+                alert('取消点赞成功')
+                if (typeof callback === 'function') {
+                    callback()
+                }
+            } else {
+                alert(result.message)
+            }
+        }, 'json')
+    }
+
+    dc.favorite = function (id, callback) {
+        $.post('/wx/article/favorite', {id: id}, function (result) {
+            if (result.code === 0) {
+                alert('收藏成功')
+                if (typeof callback === 'function') {
+                    callback()
+                }
+            } else {
+                alert(result.message)
+            }
+        }, 'json')
+    }
+
+    dc.unfavorite = function (id, callback) {
+        $.post('/wx/article/unfavorite', {id: id}, function (result) {
+            if (result.code === 0) {
+                alert('取消收藏成功')
+                if (typeof callback === 'function') {
+                    callback()
+                }
+            } else {
+                alert(result.message)
+            }
+        }, 'json')
+    }
+
+    dc.follow = function (uid, callback) {
+        $.post('/wx/user/follow', {uid: uid}, function (result) {
+            if (result.code === 0) {
+                alert('关注成功')
+                if (typeof callback === 'function') {
+                    callback()
+                }
+            } else {
+                alert(result.message)
+            }
+        }, 'json')
+    }
+
+    dc.unfollow = function (uid, callback) {
+        $.post('/wx/user/unfollow', {uid: uid}, function (result) {
+            if (result.code === 0) {
+                alert('取消关注成功')
+                if (typeof callback === 'function') {
+                    callback()
+                }
+            } else {
+                alert(result.message)
+            }
+        }, 'json')
+    }
+
+    dc.wxshare = function (id, title, url, imgUrl, callback) {
+        if (!siteConf.isWeixin) {
+            return
+        }
+        title = '大巢珠宝【' + title + '】'
+        if (url.indexOf(siteConf.host) === -1) {
+            url = siteConf.host + url;
+        }
+        if (imgUrl.indexOf(siteConf.resHost) === -1) {
+            imgUrl = siteConf.resHost + imgUrl;
+        }
+        wx.ready(function () {
+            wx.onMenuShareTimeline({
+                title: title,
+                link: url,
+                imgUrl: imgUrl,
+                success: function () {
+                    dc.afterShare(id)
+                    if (typeof callback === 'function') {
+                        callback(true)
+                    }
+                },
+                cancel: function () {
+                    if (typeof callback === 'function') {
+                        callback(false)
+                    }
+                }
+            });
+
+            wx.onMenuShareAppMessage({
+                title: title,
+                link: url,
+                imgUrl: imgUrl,
+                desc: title,
+                type: '', // 分享类型,music、video或link，不填默认为link
+                dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                success: function () {
+                    dc.afterShare(id)
+                    if (typeof callback === 'function') {
+                        callback(true)
+                    }
+                },
+                cancel: function () {
+                    if (typeof callback === 'function') {
+                        callback(false)
+                    }
+                }
+            });
+
+            // 分享到QQ
+            wx.onMenuShareQQ({
+                title: title,
+                link: url,
+                imgUrl: imgUrl,
+                desc: title,
+                success: function () {
+                    dc.afterShare(id)
+                    if (typeof callback === 'function') {
+                        callback(true)
+                    }
+                },
+                cancel: function () {
+                    if (typeof callback === 'function') {
+                        callback(false)
+                    }
+                }
+            });
+        });
+    }
+
+    dc.afterShare = function (id) {
+        $.post('/wx/article/share', {id: id})
+    }
+
+    dc.sendMessage = function (toUid, nickname, callback) {
+        dachao.textareaAlert('给' + nickname + '私信', function (message,img) {
+            $.post('/wx/message/send', {
+                toUid: toUid,
+                content: message,
+                img: img
+            }, function (result) {
+                if (result.code !== 0) {
+                    alert(result.message);
+                } else {
+                    alert('发送成功');
+                    if (typeof callback === 'function') {
+                        callback()
+                    }
+                }
+            }, 'json')
+        })
+    }
+
+    dc.loading = function () {
+        $(document.body).append('<div class="loading">Loading&#8230;</div>')
+    }
+
+    dc.loadingDone = function () {
+        $('div.loading').remove()
+    }
+
+    dc.addUrlParam = function (url, name, value) {
+        var newUrl = "";
+        var reg = new RegExp("(^|)" + name + "=([^&]*)(|$)");
+        var tmp = name + "=" + value;
+        if (url.match(reg) != null) {
+            newUrl = url.replace(eval(reg), tmp);
+        }
+        else {
+            if (url.match("[\?]")) {
+                newUrl = url + "&" + tmp;
+            }
+            else {
+                newUrl = url + "?" + tmp;
+            }
+        }
+
+        return newUrl;
+    }
+
+    dc.reload = function () {
+        window.location.href = dc.addUrlParam(window.location.href, "t", new Date().getTime())
+    }
+
+    return dc;
+})(window.jewelry || {});
+
+window.onload = function () {
+    var jsError = jewelry.getJsError();
+    if (jsError !== false) {
+        jewelry.error(jsError);
+    }
+};
+
+window.onerror = function (msg, url, line) {
+    jewelry.onJsError(msg, url, line);
+};

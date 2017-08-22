@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>资讯详情</title>
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <link rel="stylesheet" href="../../css/reset.css?v=${version!}">
+    <link rel="stylesheet" href="../../css/style.css?v=${version!}">
+    <script type="text/javascript" src="../../js/zepto.min.js"></script>
+    <script type="text/javascript" src="../../js/public.js"></script>
+    <script type="text/javascript" src="../../js/zixun/release.js"></script>
+</head>
+<body>
+  <div class="release-wrap bg-white">
+    <ul class="form">
+      <li class="sel-text clearfix">
+        <div class="sel-item fl">
+          <span class="fl">选择频道</span>
+          <select class="fl" name="" id="">
+            <option value="">选择频道</option>
+          </select>
+        </div>
+        <div class="sel-item fl">
+          <span class="fl">选择分类</span>
+          <select class="fl" name="" id="">
+            <option value="">选择分类</option>
+          </select>
+        </div>
+      </li>
+      <li class="text clearfix">
+        <span class="fl">资讯标题</span>
+        <input class="fl" type="text">
+      </li>
+      <li class="texteare clearfix">
+        <span class="fl">资讯正文</span>
+        <textarea name="" id="" cols="30" rows="10" placeholder="请输入文字，或者需要转载的URL链接； 如为转载则发布后标示转载出处。"></textarea>
+      </li>
+      <li class="up-img clearfix">
+        <span class="fl">资讯图片</span>
+        <div class="fl up-img-fr">
+          <label class="fl up-img-item" for="">
+            <img src="../../img/icon/up_img.png" alt="">
+            <input type="file">
+          </label>
+          <p class="fl">上传图片建议<br>采用500*500px像素</p>
+        </div>
+      </li>
+      <li class="radio-text clearfix">
+        <span class="fl">选择水印</span>
+        <div class="radio-text-r fl">
+          <label class="fl active" for="">
+            <i class="fl radio-icon"></i>
+            <p class="fl">水印1</p>
+          </label>
+          <label class="fl" for="">
+            <i class="fl radio-icon"></i>
+            <p class="fl">水印2</p>
+          </label>
+          <label class="fl" for="">
+            <i class="fl radio-icon"></i>
+            <p class="fl">水印3</p>
+          </label>
+        </div>
+      </li>
+      <li class="watermark-text clearfix">
+        <span class="fl">选择图片<br>水印位置</span>
+        <div class="fl watermark-pst" id="watermarkPst">
+          <div>
+            <a class="active" href="javascript:;">左上</a>
+            <a href="javascript:;">中上</a>
+            <a href="javascript:;">右上</a>
+          </div>
+          <div>
+            <a href="javascript:;">左中</a>
+            <a href="javascript:;">居中</a>
+            <a href="javascript:;">居右</a>
+          </div>
+          <div>
+            <a href="javascript:;">左下</a>
+            <a href="javascript:;">中下</a>
+            <a href="javascript:;">右下</a>
+          </div>
+        </div>
+      </li>
+      <li class="download-img clearfix">
+        <span class="fl">下载图片积分</span>
+        <div class="fl download-img-text">
+          <input class="fl" type="text">
+          <p class="fl">（每张/分）</p>
+        </div>
+      </li>
+    </ul>
+    <a href="" class="release-sub">发布</a>
+  </div>
+  <div class="bottom-box clearfix">
+    <footer class="bottom-nav bg-white clearfix">
+      <a class="home fl" href="">
+        <span class="home-icon"></span>
+        <p>首页</p>
+      </a>
+      <a class="zixun active" href="">
+        <span class="zixun-icon"></span>
+        <p>资讯中心</p>
+      </a>
+      <a class="mapdepot fr" href="">
+        <span class="mapdepot-icon"></span>
+        <p>我的图库</p>
+      </a>
+    </footer>
+  </div>
+</body>
+</html>

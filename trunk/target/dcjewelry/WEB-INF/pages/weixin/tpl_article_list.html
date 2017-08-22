@@ -1,0 +1,9 @@
+<%for (article in articlePage.data){%>
+<%if(!isEmpty(adArticle) && articleLP.index==3){%>
+<%include("/weixin/article/tpl_article_list_index.html", {article:adArticle}){}%>
+<%}%>
+<%include("/weixin/article/tpl_article_list_index.html", {article:article}){}%>
+<%}%>
+<%if(!isEmpty(adArticle) && articlePage.data.~size<3){%>
+<%include("/weixin/article/tpl_article_list_index.html", {article:adArticle}){}%>
+<%}%>

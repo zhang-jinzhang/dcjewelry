@@ -1,0 +1,9 @@
+<%for(point in points){%>
+<li class="item clearfix">
+    <div class="fl">
+        <h4 class="title">${point.type!}</h4>
+        <p class="date">${point.createTime, "yyyy-MM-dd HH:mm:ss"}</p>
+    </div>
+    <span class="num fr"><%if(point.amount>0){%>+<%}%>${point.amount}</span>
+</li>
+<%}%>

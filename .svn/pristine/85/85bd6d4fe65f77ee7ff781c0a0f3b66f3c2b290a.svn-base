@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>资讯详情</title>
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <link rel="stylesheet" href="../../css/reset.css?v=${version!}">
+    <link rel="stylesheet" href="../../css/style.css?v=${version!}">
+    <script type="text/javascript" src="../../js/zepto.min.js"></script>
+    <script type="text/javascript" src="../../js/public.js"></script>
+    <script type="text/javascript" src="../../js/zixun/category.js"></script>
+</head>
+<body>
+  <div class="cg-warp">
+    <div class="cg-search bg-white">
+      <input type="search" id="search" placeholder="搜索分类或关键词">
+      <div class="search-pd bg-white" id="searchPd">
+        <dl class="history">
+          <dt><h3>历史记录</h3></dt>
+          <dd>
+            <!-- <p>暂无历史记录</p> -->
+            <a href="">砖石</a>
+            <a href="">珠宝</a>
+          </dd>
+        </dl>
+        <dl class="hot-word">
+          <dt><h3>热搜词</h3></dt>
+          <dd>
+            <div class="hot-word-list clearfix">
+              <a href="">砖石</a>
+              <a href="">珠宝</a>
+            </div>
+          </dd>
+        </dl>
+      </div>
+    </div>
+    <div class="cg-main bg-white">
+      <ul class="main-l" id="subnav">
+        <li class="active">
+          <a href="javascript:;">推荐</a>
+        </li>
+        <li>
+          <a href="javascript:;">推荐</a>
+        </li>
+        <li>
+          <a href="javascript:;">推荐</a>
+        </li>
+        <li>
+          <a href="javascript:;">推荐</a>
+        </li>
+      </ul>
+      <div class="main-r" id="main">
+        <dl class="cg-list">
+          <dt>推荐</dt>
+          <dd>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+          </dd>
+        </dl>
+        <dl class="cg-list">
+          <dt>砖石</dt>
+          <dd>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+            <div class="item clearfix">
+              <img class="fl" src="https://m.360buyimg.com/mobile/s100x100_jfs/t2782/149/1998822772/17899/b85cc0f3/57550c12Nba029c3e.png" alt="">
+              <p class="fl">水晶</p>
+              <a class="add-category fl" href="javascript:;">添加</a>
+            </div>
+          </dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-box clearfix">
+    <footer class="bottom-nav bg-white clearfix">
+      <a class="home fl" href="">
+        <span class="home-icon"></span>
+        <p>首页</p>
+      </a>
+      <a class="zixun active" href="">
+        <span class="zixun-icon"></span>
+        <p>资讯中心</p>
+      </a>
+      <a class="mapdepot fr" href="">
+        <span class="mapdepot-icon"></span>
+        <p>我的图库</p>
+      </a>
+    </footer>
+  </div>
+</body>
+</html>

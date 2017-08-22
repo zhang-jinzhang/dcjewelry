@@ -1,0 +1,67 @@
+<%
+layout("/admin/layout.html",{
+js:['admin/user.js']
+}){
+%>
+<div class="row" id="user-info" data-uid="${user.id}">
+    <div class="col-lg-6">
+        用户编号：${user.id}
+    </div>
+    <div class="col-lg-6">
+        昵称：${user.nickname}
+    </div>
+    <div class="col-lg-6">
+        手机号：${user.phone}
+    </div>
+    <div class="col-lg-6">
+        等级：${user.level}
+    </div>
+    <div class="col-lg-6">
+        积分：${user.point}
+    </div>
+    <div class="col-lg-6">
+        性别：<%include("/admin/user/tpl_sex.html", {sex:user.sex}){}%>
+    </div>
+    <div class="col-lg-6">
+        地址：${user.address}
+    </div>
+    <div class="col-lg-6">
+        头像：<img style="wdith:100px; height:100px;" src="${resHost}${user.headimg}" alt="用户头像">
+    </div>
+    <div class="col-lg-6">
+        注册时间：${user.createTime}
+    </div>
+    <%if (!isEmpty(user.merchant)){%>
+    <div class="col-lg-6">
+        商家名称：${user.merchant.name!}
+    </div>
+    <div class="col-lg-6">
+        法人：${user.merchant.boss!}
+    </div>
+    <div class="col-lg-6">
+        主营业务：${categoryMap[user.merchant.cid!].name}
+    </div>
+    <div class="col-lg-6">
+        区域：${user.merchant.area!}
+    </div>
+    <div class="col-lg-6">
+        邮箱：${user.merchant.email!}
+    </div>
+    <div class="col-lg-6">
+        状态：<%include("/admin/user/tpl_merchantStatus.html", {status:user.merchant.status}){}%>
+    </div>
+    <div class="col-lg-6">
+        申请时间：${user.merchant.createTime!}
+    </div>
+    <div class="col-lg-12">
+        营业执照/法人身份证：<img src="${user.merchant.businessPic!}" alt=""/>
+    </div>
+    <%if(user.merchant.status == 0){%>
+    <div class="col-lg-12">
+        <button id="pass-btn" type="button" class="btn btn-success">审核通过</button>
+        <button id="fail-btn" type="button" class="btn btn-danger">审核失败</button>
+    </div>
+    <%}%>
+    <%}%>
+</div>
+<%}%>

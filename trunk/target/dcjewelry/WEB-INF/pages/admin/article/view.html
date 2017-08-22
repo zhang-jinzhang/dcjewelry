@@ -1,0 +1,42 @@
+<%
+layout("/admin/layout.html",{
+js:['admin/user.js']
+}){
+%>
+<div class="row">
+    <div class="col-lg-6">
+        标题：${article.title}
+    </div>
+    <div class="col-lg-6">
+        分类：${categoryMap[article.cid!].name!}
+    </div>
+    <div class="col-lg-6">
+        发布者：${article.user.nickname!}
+    </div>
+    <div class="col-lg-6">
+        发布时间：${article.createTime}
+    </div>
+    <div class="col-lg-6">
+        阅读：${article.viewCount}
+    </div>
+    <div class="col-lg-6">
+        点赞：${article.likeCount}
+    </div>
+    <div class="col-lg-6">
+        评论：${article.commentCount}
+    </div>
+    <div class="col-lg-6">
+        收藏：${article.favoriteCount}
+    </div>
+    <div class="col-lg-12">
+        ${article.content}
+    </div>
+    <%if (article.type == 1 && !isEmpty(pictures)){%>
+    <%for (pic in pictures) {%>
+    <div class="col-lg-3">
+        <img class="img-responsive" src="${resHost}${pic.url}" alt="">
+    </div>
+    <%}%>
+    <%}%>
+</div>
+<%}%>

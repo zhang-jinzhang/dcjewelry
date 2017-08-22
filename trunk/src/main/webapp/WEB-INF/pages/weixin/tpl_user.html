@@ -1,0 +1,50 @@
+<div class="zx-shade hide" id="shade"></div>
+<div class="zx-user-left" id="userLeft">
+    <div class="zx-hd">
+        <a class="info clearfix" href="/wx/user/edit.html">
+            <div class="head-pic fl">
+                <img src="${user.headimg!}" alt="">
+            </div>
+            <div class="fl">
+                <div class="name">${user.nickname!}</div>
+                <div class="grade">等级：LV${user.level}</div>
+                <i class="arr-r"></i>
+            </div>
+        </a>
+
+        <div class="count-link clearfix">
+            <a class="fl" href="/wx/point/index.html">
+                <span>积分</span>
+                <span>${user.point}币</span>
+            </a>
+            <a class="fl" href="/wx/follow/index.html">
+                <span>关注</span>
+                <span>${user.followCount}</span>
+            </a>
+            <a class="fl" href="/wx/favorite/index.html">
+                <span>收藏</span>
+                <span>${user.favoriteCount}</span>
+            </a>
+        </div>
+    </div>
+    <ul class="list bg-white">
+        <li>
+            <a class="clearfix" href="/wx/message/index.html">
+                <i class="icon news-manage-icon fl"></i>
+                <p class="fl">消息管理</p>
+            </a>
+        </li>
+        <li>
+            <a class="clearfix" href="/wx/request/index.html">
+                <i class="icon serve-icon fl"></i>
+                <p class="fl">同行服务</p>
+            </a>
+        </li>
+        <li>
+            <a class="clearfix" href="/wx/aboutUs.html">
+                <i class="icon about-us-icon fl"></i>
+                <p class="fl">帮助中心</p>
+            </a>
+        </li>
+    </ul>
+</div>

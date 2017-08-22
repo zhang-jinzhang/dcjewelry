@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>资讯详情</title>
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <link rel="stylesheet" href="../../css/reset.css?v=${version!}">
+    <link rel="stylesheet" href="../../css/style.css?v=${version!}">
+    <script type="text/javascript" src="../../js/zepto.min.js"></script>
+    <script type="text/javascript" src="../../js/public.js"></script>
+</head>
+<body>
+  <div class="md-hd">
+    <div class="camera-btn camera-icon"></div>
+    <div class="head-pic">
+      <img src="../..//img/map_depot.png" alt="">
+    </div>
+    <p class="name">李梦颖</p>
+  </div>
+  <div class="md-content">
+  </div>
+</body>
+</html>

@@ -1,0 +1,10 @@
+<div class="card-item bg-white">
+    <div class="pic-text-item">
+        <a href="/wx/article/${article.id}.html" class="clearfix">
+            <div class="con">
+                <h3>${article.title!}</h3>
+            </div>
+            <img src="${article.firstPic!}" alt="" class="pic">
+        </a>
+    </div>
+</div>

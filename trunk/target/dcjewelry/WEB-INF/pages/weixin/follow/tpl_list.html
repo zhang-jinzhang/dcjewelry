@@ -1,0 +1,12 @@
+<%for(follow in follows){%>
+<div class="item clearfix">
+    <a class="head-pic fl" href="">
+        <img src="${follow.user.headimg!}" alt="">
+    </a>
+    <div class="box fl clearfix">
+        <a href="" class="name">${follow.user.nickname!}</a>
+        <p class="text">等级：LV${follow.user.level}</p>
+    </div>
+    <a href="" class="fr unfollow-btn" data-uid="${follow.user.id}">&nbsp;取消关注</a>
+</div>
+<%}%>

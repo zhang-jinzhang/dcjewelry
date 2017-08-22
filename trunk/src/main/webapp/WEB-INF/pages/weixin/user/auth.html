@@ -1,0 +1,118 @@
+<%
+layout("/weixin/layout.html",{
+title:'同行认证',
+css:['index.css'],
+js: ['jquery-2.0.3.min.js', 'admin/ajaxupload.js', 'distpicker.data.min.js', 'distpicker.min.js', 'user/auth.js'],
+mavNav : 2
+}){
+%>
+<%if(isEmpty(user.merchant) || user.merchant.status==2){%>
+<form id="form-auth" role="form" method="post" action="/wx/user/auth-save" enctype="multipart/form-data">
+    <div class="id-wrap">
+        <ul class="id-form bg-white">
+            <li class="text clearfix">
+                <span class="fl">商家名称:</span>
+                <input class="fl" type="text" name="name" value="${user.merchant.name!}">
+            </li>
+            <li class="text sel clearfix">
+                <span class="fl">经营珠宝类型</span>
+                <div class="distpicker">
+                <select class="fr" id="cid" name="cid" data-cid="${user.merchant.cid!}">
+                    <option value="0">请选择类型</option>
+                    <%for(topCategory in topCategories){%>
+                    <option value="${topCategory.id}">${topCategory.name}</option>
+                    <%}%>
+                </select>
+               </div>
+            </li>
+            <li class="text sel clearfix">
+                <span class="fl">经营区域:</span>
+                <input type="hidden" id="area" name="area" placeholder="" value="${user.merchant.area!}"/>
+                <div class="fl distpicker" data-toggle="distpicker">
+                    <%if(!isEmpty(parts) && parts.~size==3){%>
+                      <div class="clearfix">
+                        <select class="area fl" id="province" data-province="${parts[0]}"></select>
+                        <select class="area fr" id="city" data-city="${parts[1]}"></select>
+                      </div>
+                      <!--<select class="area fl" id="district" data-district="${parts[2]}"></select>-->
+                    <%}else{%>
+                      <div class="clearfix">
+                        <select class="fl"></select>
+                        <select class="fr"></select>
+                      </div>
+                      <!--<select class="fl"></select>-->
+                    <%}%>
+                </div>
+            </li>
+            <li class="text clearfix">
+                <span class="fl">企业法人:</span>
+                <input class="fl" type="text" name="boss" value="${user.merchant.boss!}">
+            </li>
+            <li class="text clearfix">
+                <span class="fl">联系电话:</span>
+                <input class="fl" type="text" name="phone" value="${user.phone!}">
+            </li>
+            <li class="text clearfix">
+                <span class="fl">企业邮箱:</span>
+                <input class="fl" type="text" name="email" value="${user.merchant.email!}">
+            </li>
+        </ul>
+        <dl class="id-up-pic bg-white">
+            <dt>证件上传</dt>
+            <dd>
+                <span id="authBg"></span>
+                <img id="authImg" src="${user.merchant.businessPic!}" alt="">
+                <p>请上传您的企业营业执照或法人身份证正面照片</p>
+                <label class="up-pic-btn" for="upPic">点击上传<input type="file" name="file" id="upPic"></label>
+            </dd>
+        </dl>
+        <div class="id-ft">
+            <button type="submit" class="id-sub">保存并提交</button>
+            <p>本资料上传后用于同行服务信息的互动及资讯发布使用</p>
+        </div>
+    </div>
+</form>
+<script>
+    $(document).ready(function () {
+//      if ('${user.merchant.businessPic!}' !== '') {
+//          $("#authBg").hide()
+//      }
+        var cid = $('#cid').attr('data-cid')
+        if (cid !== '') {
+            $('#cid').val(cid)
+        }
+        $('#form-auth').ajaxform({
+            "before": function() {
+                $('#area').val($('#province').val() + " " + $('#city').val() + " " + $('#district').val())
+                return true
+            },
+            "complete": function (result) {
+                result = JSON.parse(result);
+                if (result.code !== 0) {
+                    alert(result.message);
+                } else {
+                    alert('提交成功，请等待审核')
+                    jewelry.redirect("/wx/index.html")
+                }
+            }
+        });
+    })
+</script>
+<%}else{%>
+<%if(user.merchant.status == 1){%>
+<script>
+    $(document).ready(function() {
+        alert('你已通过同行认证');
+        jewelry.redirect('/wx/request/index.html')
+    })
+</script>
+<%}else if(user.merchant.status==0){%>
+<script>
+    $(document).ready(function () {
+        alert('认证资料已提交，请等待审核');
+        jewelry.redirect('/wx/index.html')
+    });
+</script>
+<%}%>
+<%}%>
+<%}%>

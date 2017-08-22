@@ -1,0 +1,28 @@
+<%for(notice in notices){%>
+<div class="card-item inform-item bg-white">
+    <div class="head">
+        <a class="head-pic" href="">
+            <img src="${resHost}/img/logo70.png" alt="">
+        </a>
+
+        <div class="box clearfix">
+            <div class="fl">
+                <a href="" class="name">朱宝仓</a>
+                <span class="timer">${notice.updateTime, 'yyyy-MM-dd HH:mm:ss'}</span>
+            </div>
+            <div class="fr">
+                <div class="card-hd-btn clearfix">
+                    <%if(!notice.read){%>
+                    <a href="" data-id="${notice.id}" class="fr br-red-btn read-btn">标记为已读</a>
+                    <%}%>
+                </div>
+            </div>
+        </div>
+    </div>
+    <dl class="inform-text-item">
+        <dt>${notice.content!}</dt>
+    </dl>
+    <div class="pic-text-item">
+    </div>
+</div>
+<%}%>

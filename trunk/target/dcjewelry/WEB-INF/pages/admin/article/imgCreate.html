@@ -1,0 +1,107 @@
+<%
+layout("/admin/layout.html",{
+js:['ueditor/ueditor.config.js', 'ueditor/ueditor.all.js', 'admin/article.js']
+}){
+%>
+<form class="form-horizontal" role="form">
+    <input type="hidden" id="functionType" value="1">
+    <div class="form-group">
+        <label class="col-sm-1 control-label">资讯标题</label>
+
+        <div class="col-sm-5">
+            <input type="hidden" id="id" value="${article.id!'0'}">
+            <input type="text" class="form-control" id="title" name="title" value="${article.title!}" placeholder="请输入标题">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-1 control-label">发布频道</label>
+
+        <div class="col-sm-10">
+            <label class="pull-left margin-r">
+                <select id="topCategorySel" class="form-control input-sm" data-id="${article.pid!0}">
+                    <option value="0">请选择频道</option>
+                    <%for (topCategory in topCategories) { %>
+                    <option value="${topCategory.id}">${topCategory.name}</option>
+                    <%}%>
+                </select>
+            </label>
+            <label class="pull-left margin-r">
+                <select id="categorySel" class="form-control input-sm" data-id="${article.cid!0}">
+                    <option value="0">请选择分类</option>
+                    <%for (topCategory in topCategories) { %>
+                    <%for (category in topCategory.articleCategoryList) { %>
+                    <option value="${category.id}" data-pid="${category.pid}" style="display: none">${category.name}</option>
+                    <%}%>
+                    <%}%>
+                </select>
+            </label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-1 control-label">水印</label>
+        <div class="col-sm-10">
+            <%for(wm in watermarks){%>
+            <label class="checkbox-inline">
+                <input type="radio" id="wmId" name="wmId" value="${wm.id}" <%if(wm.id==article.wmId! || (isEmpty(article) && wmLP.index==1)){%>checked="checked"<%}%>>水印${wmLP.index}
+            </label>
+            <%}%>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-1 control-label">水印位置</label>
+        <div class="col-sm-10">
+            <div class="clearfix">
+                <label class="checkbox-inline">
+                    <input type="hidden" id="wmPosHidden" value="${article.wmPos!'0'}">
+                    <input type="radio" name="wmPos" value="0">左上
+                </label>
+                <label class="checkbox-inline">
+                    <input type="radio" name="wmPos" value="3">中上
+                </label>
+                <label class="checkbox-inline">
+                    <input type="radio" name="wmPos" value="6">右上
+                </label>
+            </div>
+            <div class="clearfix">
+                <label class="checkbox-inline">
+                    <input type="radio" name="wmPos" value="1">左中
+                </label>
+                <label class="checkbox-inline">
+                    <input type="radio" name="wmPos" value="4">中中
+                </label>
+                <label class="checkbox-inline">
+                    <input type="radio" name="wmPos" value="7">右中
+                </label>
+            </div>
+            <div class="clearfix">
+                <label class="checkbox-inline">
+                    <input type="radio" name="wmPos" value="2">左下
+                </label>
+                <label class="checkbox-inline">
+                    <input type="radio" name="wmPos" value="5">中下
+                </label>
+                <label class="checkbox-inline">
+                    <input type="radio" name="wmPos" value="8">右下
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="point" class="col-sm-1 control-label">下载积分</label>
+
+        <div class="col-sm-2">
+            <input type="text" class="form-control" id="point" value="${article.point!0}">
+        </div>
+        <div class="pull-left checkbox-inline">积分</div>
+    </div>
+    <div>正文</div>
+    <div class="form-group">
+        <div class="col-lg-10">
+            <textarea id="content" name="content">${article.content!}</textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <button type="button" id="save-btn" class="btn btn-info">保存</button>
+    </div>
+</form>
+<%}%>
